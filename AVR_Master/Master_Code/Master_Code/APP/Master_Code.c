@@ -6,12 +6,11 @@
  */ 
 
 
-#include <avr/io.h>
+#include <Master_app.h>
 
 int main(void)
 {
     while(1)
     {
-        //TODO:: Please write your application code 
     }
 }

@@ -9,7 +9,9 @@
 #ifndef SLAVE_APP_H_
 #define SLAVE_APP_H_
 
+void Slave_Init_system();
 
+void Slave_Control_system();
 
 
 

@@ -81,6 +81,16 @@
       <Value>DEBUG</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../Services</Value>
+      <Value>../MCAL/DIO</Value>
+      <Value>../MCAL/I2C</Value>
+      <Value>../MCAL/Interrupt</Value>
+      <Value>../HAL/LCD</Value>
+      <Value>../APP</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
   <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
@@ -96,9 +106,54 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Slave_Code.c">
+    <Compile Include="APP\Slave_app.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="APP\Slave_app.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="APP\Slave_Code.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\LCD\LCD.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\LCD\LCD.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\AVR32_Chip_Confg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\GPIO.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\GPIO.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\I2C\I2C_File.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\I2C\I2C_File.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Services\AVR_32_Registers.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Services\Macros_Functions.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Services\STD_Types.h">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HAL\LCD" />
+    <Folder Include="MCAL" />
+    <Folder Include="HAL" />
+    <Folder Include="APP" />
+    <Folder Include="MCAL\DIO" />
+    <Folder Include="MCAL\I2C" />
+    <Folder Include="Services" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

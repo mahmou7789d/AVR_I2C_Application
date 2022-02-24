@@ -5,8 +5,8 @@
  *  Author: Mahm Oud Sa Ad
  */ 
 
+#include <Slave_app.h>
 
-#include <avr/io.h>
 
 int main(void)
 {

@@ -55,7 +55,7 @@ void TWI_INIT(uint_8 SCL_F) /* master - F_SCL - No interrupts*/
 	TWSR = TWSR_Temp;
 	TWBR = (((F_CPU /SCL_F)-16)/(2*Presaler_Val));
 }
-uint_8 TWI_Start(uint_8 SLA_Value)
+void TWI_Start(uint_8 SLA_Value)
 {
 	switch(TWI_1.Micro_state)
 	{
@@ -84,13 +84,14 @@ uint_8 TWI_Start(uint_8 SLA_Value)
 		     break;
 	}
 }
-uint_8 TWI_Write_Byte(uint_8 T_Data)
+void TWI_Write_Byte(uint_8 T_Data)
 {
 	TWDR = T_Data;
 	SET_BIT(TWCR,TWEN_bit);
 	SET_BIT(TWCR,TWINT_bit);
 	while (READ_BIT(TWCR,TWINT_bit) ==0);
 	while ((TWSR & Mask_Prescaler_val) != Data_Transmit_status);
+	
 }
 
 uint_8 TWI_Read_Byte()
