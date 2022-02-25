@@ -10,8 +10,9 @@
 
 int main(void)
 {
+	Slave_Init_system();
     while(1)
     {
-        //TODO:: Please write your application code 
+		Slave_Control_system();
     }
 }

@@ -3,23 +3,27 @@ Master_Code.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000082  00000000  00000000  00000054  2**1
+  0 .text         00000238  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .comment      00000030  00000000  00000000  000000d6  2**0
+  1 .bss          00000004  00800060  00800060  000002ac  2**0
+                  ALLOC
+  2 .comment      00000030  00000000  00000000  000002ac  2**0
                   CONTENTS, READONLY
-  2 .debug_aranges 00000020  00000000  00000000  00000106  2**0
+  3 .debug_aranges 00000088  00000000  00000000  000002dc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_info   0000004b  00000000  00000000  00000126  2**0
+  4 .debug_info   000005c6  00000000  00000000  00000364  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_abbrev 0000003b  00000000  00000000  00000171  2**0
+  5 .debug_abbrev 000002d1  00000000  00000000  0000092a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_line   00000041  00000000  00000000  000001ac  2**0
+  6 .debug_line   000002ed  00000000  00000000  00000bfb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_frame  00000024  00000000  00000000  000001f0  2**2
+  7 .debug_frame  000000c4  00000000  00000000  00000ee8  2**2
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_str    00000116  00000000  00000000  00000214  2**0
+  8 .debug_str    000003c8  00000000  00000000  00000fac  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_ranges 00000010  00000000  00000000  0000032a  2**0
+  9 .debug_loc    000001a1  00000000  00000000  00001374  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000058  00000000  00000000  00001515  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -65,26 +69,393 @@ Disassembly of section .text:
   68:	1d 92       	st	X+, r1
 
 0000006a <.do_clear_bss_start>:
-  6a:	a0 36       	cpi	r26, 0x60	; 96
+  6a:	a4 36       	cpi	r26, 0x64	; 100
   6c:	b2 07       	cpc	r27, r18
   6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
-  70:	0e 94 3e 00 	call	0x7c	; 0x7c <main>
-  74:	0c 94 3f 00 	jmp	0x7e	; 0x7e <_exit>
+  70:	0e 94 5e 00 	call	0xbc	; 0xbc <main>
+  74:	0c 94 1a 01 	jmp	0x234	; 0x234 <_exit>
 
 00000078 <__bad_interrupt>:
   78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-0000007c <main>:
+0000007c <Master_Init_system>:
+#include <Master_app.h>
+#include <util/delay.h>
+uint_8 COUNTER = 0;
+void Master_Init_system()
+{
+	TWI_1.Micro_state = Master_Transmitter;
+  7c:	10 92 63 00 	sts	0x0063, r1
+	TWI_1.Presaler_Val = No_Presaler;
+  80:	10 92 61 00 	sts	0x0061, r1
+	TWI_1.TWI_state = TWI_Enabled;
+  84:	81 e0       	ldi	r24, 0x01	; 1
+  86:	80 93 60 00 	sts	0x0060, r24
+	TWI_INIT(50000);
+  8a:	60 e5       	ldi	r22, 0x50	; 80
+  8c:	73 ec       	ldi	r23, 0xC3	; 195
+  8e:	80 e0       	ldi	r24, 0x00	; 0
+  90:	90 e0       	ldi	r25, 0x00	; 0
+  92:	0e 94 65 00 	call	0xca	; 0xca <TWI_INIT>
+  96:	08 95       	ret
 
+00000098 <Master_Control_system>:
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  98:	2f ef       	ldi	r18, 0xFF	; 255
+  9a:	84 e3       	ldi	r24, 0x34	; 52
+  9c:	9c e0       	ldi	r25, 0x0C	; 12
+  9e:	21 50       	subi	r18, 0x01	; 1
+  a0:	80 40       	sbci	r24, 0x00	; 0
+  a2:	90 40       	sbci	r25, 0x00	; 0
+  a4:	e1 f7       	brne	.-8      	; 0x9e <Master_Control_system+0x6>
+  a6:	00 c0       	rjmp	.+0      	; 0xa8 <Master_Control_system+0x10>
+  a8:	00 00       	nop
+
+void Master_Control_system()
+{
+	
+		_delay_ms(500);
+		TWI_Start(0b11100000);
+  aa:	80 ee       	ldi	r24, 0xE0	; 224
+  ac:	0e 94 a1 00 	call	0x142	; 0x142 <TWI_Start>
+		TWI_Write_Byte(3+48);
+  b0:	83 e3       	ldi	r24, 0x33	; 51
+  b2:	0e 94 d9 00 	call	0x1b2	; 0x1b2 <TWI_Write_Byte>
+		TWI_Stop();
+  b6:	0e 94 e8 00 	call	0x1d0	; 0x1d0 <TWI_Stop>
+  ba:	08 95       	ret
+
+000000bc <main>:
 
 #include <Master_app.h>
 
 int main(void)
 {
-  7c:	ff cf       	rjmp	.-2      	; 0x7c <main>
+	Master_Init_system();
+  bc:	0e 94 3e 00 	call	0x7c	; 0x7c <Master_Init_system>
+	Master_Control_system();
+  c0:	0e 94 4c 00 	call	0x98	; 0x98 <Master_Control_system>
+	Master_Control_system();
+  c4:	0e 94 4c 00 	call	0x98	; 0x98 <Master_Control_system>
+  c8:	ff cf       	rjmp	.-2      	; 0xc8 <main+0xc>
 
-0000007e <_exit>:
-  7e:	f8 94       	cli
+000000ca <TWI_INIT>:
+#include <I2C_File.h>
 
-00000080 <__stop_program>:
-  80:	ff cf       	rjmp	.-2      	; 0x80 <__stop_program>
+TWi_Micro_data TWI_1={0};
+
+void TWI_INIT(uint_32 SCL_F) /* master - F_SCL - No interrupts*/
+{
+  ca:	cf 93       	push	r28
+  cc:	9b 01       	movw	r18, r22
+  ce:	ac 01       	movw	r20, r24
+	/*Enable I2C*/
+	uint_8 Presaler_Val=0;
+	uint_8 TWSR_Temp =0;
+	uint_8 TWCR_Temp =0;
+	switch(TWI_1.TWI_state)
+  d0:	80 91 60 00 	lds	r24, 0x0060
+  d4:	81 30       	cpi	r24, 0x01	; 1
+  d6:	11 f0       	breq	.+4      	; 0xdc <TWI_INIT+0x12>
+void TWI_INIT(uint_32 SCL_F) /* master - F_SCL - No interrupts*/
+{
+	/*Enable I2C*/
+	uint_8 Presaler_Val=0;
+	uint_8 TWSR_Temp =0;
+	uint_8 TWCR_Temp =0;
+  d8:	90 e0       	ldi	r25, 0x00	; 0
+  da:	01 c0       	rjmp	.+2      	; 0xde <TWI_INIT+0x14>
+	switch(TWI_1.TWI_state)
+	{
+		case TWI_Enabled:
+		SET_BIT(TWCR_Temp,TWEN_bit);
+  dc:	94 e0       	ldi	r25, 0x04	; 4
+		CLEAR_BIT(TWCR_Temp,TWEN_bit);
+		break;
+		default:
+		break;
+	}
+	switch(TWI_1.Presaler_Val)
+  de:	80 91 61 00 	lds	r24, 0x0061
+  e2:	81 30       	cpi	r24, 0x01	; 1
+  e4:	41 f0       	breq	.+16     	; 0xf6 <TWI_INIT+0x2c>
+  e6:	80 f0       	brcs	.+32     	; 0x108 <TWI_INIT+0x3e>
+  e8:	82 30       	cpi	r24, 0x02	; 2
+  ea:	41 f0       	breq	.+16     	; 0xfc <TWI_INIT+0x32>
+  ec:	83 30       	cpi	r24, 0x03	; 3
+  ee:	49 f0       	breq	.+18     	; 0x102 <TWI_INIT+0x38>
+
+void TWI_INIT(uint_32 SCL_F) /* master - F_SCL - No interrupts*/
+{
+	/*Enable I2C*/
+	uint_8 Presaler_Val=0;
+	uint_8 TWSR_Temp =0;
+  f0:	80 e0       	ldi	r24, 0x00	; 0
+TWi_Micro_data TWI_1={0};
+
+void TWI_INIT(uint_32 SCL_F) /* master - F_SCL - No interrupts*/
+{
+	/*Enable I2C*/
+	uint_8 Presaler_Val=0;
+  f2:	c0 e0       	ldi	r28, 0x00	; 0
+  f4:	0b c0       	rjmp	.+22     	; 0x10c <TWI_INIT+0x42>
+		CLEAR_BIT(TWSR_Temp,TWPS1_bit);
+		Presaler_Val=1;
+		break;
+		case Prescaler_4:
+		SET_BIT(TWSR_Temp,TWPS0_bit);
+		CLEAR_BIT(TWSR_Temp,TWPS1_bit);
+  f6:	81 e0       	ldi	r24, 0x01	; 1
+		Presaler_Val=4;
+  f8:	c4 e0       	ldi	r28, 0x04	; 4
+		break;
+  fa:	08 c0       	rjmp	.+16     	; 0x10c <TWI_INIT+0x42>
+		case Prescaler_16:
+		CLEAR_BIT(TWSR_Temp,TWPS0_bit);
+		SET_BIT(TWSR_Temp,TWPS1_bit);
+  fc:	82 e0       	ldi	r24, 0x02	; 2
+		Presaler_Val=16;
+  fe:	c0 e1       	ldi	r28, 0x10	; 16
+		break;
+ 100:	05 c0       	rjmp	.+10     	; 0x10c <TWI_INIT+0x42>
+		case Prescaler_64:
+		SET_BIT(TWSR_Temp,TWPS0_bit);
+		SET_BIT(TWSR_Temp,TWPS1_bit);
+ 102:	83 e0       	ldi	r24, 0x03	; 3
+		Presaler_Val=64;
+ 104:	c0 e4       	ldi	r28, 0x40	; 64
+		break;
+ 106:	02 c0       	rjmp	.+4      	; 0x10c <TWI_INIT+0x42>
+	}
+	switch(TWI_1.Presaler_Val)
+	{
+		case No_Presaler:
+		CLEAR_BIT(TWSR_Temp,TWPS0_bit);
+		CLEAR_BIT(TWSR_Temp,TWPS1_bit);
+ 108:	80 e0       	ldi	r24, 0x00	; 0
+		Presaler_Val=1;
+ 10a:	c1 e0       	ldi	r28, 0x01	; 1
+		Presaler_Val=64;
+		break;
+		default:
+		break;
+	}
+	TWCR = TWCR_Temp;
+ 10c:	96 bf       	out	0x36, r25	; 54
+	TWSR = TWSR_Temp;
+ 10e:	81 b9       	out	0x01, r24	; 1
+	TWBR = (((F_CPU /SCL_F)-16)/(2*Presaler_Val));
+ 110:	60 e0       	ldi	r22, 0x00	; 0
+ 112:	72 e1       	ldi	r23, 0x12	; 18
+ 114:	8a e7       	ldi	r24, 0x7A	; 122
+ 116:	90 e0       	ldi	r25, 0x00	; 0
+ 118:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <__udivmodsi4>
+ 11c:	ca 01       	movw	r24, r20
+ 11e:	b9 01       	movw	r22, r18
+ 120:	60 51       	subi	r22, 0x10	; 16
+ 122:	71 09       	sbc	r23, r1
+ 124:	81 09       	sbc	r24, r1
+ 126:	91 09       	sbc	r25, r1
+ 128:	2c 2f       	mov	r18, r28
+ 12a:	30 e0       	ldi	r19, 0x00	; 0
+ 12c:	22 0f       	add	r18, r18
+ 12e:	33 1f       	adc	r19, r19
+ 130:	44 27       	eor	r20, r20
+ 132:	37 fd       	sbrc	r19, 7
+ 134:	40 95       	com	r20
+ 136:	54 2f       	mov	r21, r20
+ 138:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <__udivmodsi4>
+ 13c:	20 b9       	out	0x00, r18	; 0
+}
+ 13e:	cf 91       	pop	r28
+ 140:	08 95       	ret
+
+00000142 <TWI_Start>:
+void TWI_Start(uint_8 SLA_Value)
+{
+	switch(TWI_1.Micro_state)
+ 142:	90 91 63 00 	lds	r25, 0x0063
+ 146:	99 23       	and	r25, r25
+ 148:	19 f0       	breq	.+6      	; 0x150 <TWI_Start+0xe>
+ 14a:	93 30       	cpi	r25, 0x03	; 3
+ 14c:	01 f1       	breq	.+64     	; 0x18e <TWI_Start+0x4c>
+ 14e:	08 95       	ret
+	{
+		case Master_Transmitter:
+		     SET_BIT(TWCR,TWEN_bit);
+ 150:	96 b7       	in	r25, 0x36	; 54
+ 152:	94 60       	ori	r25, 0x04	; 4
+ 154:	96 bf       	out	0x36, r25	; 54
+		     SET_BIT(TWCR,TWINT_bit);
+ 156:	96 b7       	in	r25, 0x36	; 54
+ 158:	90 68       	ori	r25, 0x80	; 128
+ 15a:	96 bf       	out	0x36, r25	; 54
+		     SET_BIT(TWCR,TWSTA_bit);
+ 15c:	96 b7       	in	r25, 0x36	; 54
+ 15e:	90 62       	ori	r25, 0x20	; 32
+ 160:	96 bf       	out	0x36, r25	; 54
+		     while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 162:	06 b6       	in	r0, 0x36	; 54
+ 164:	07 fe       	sbrs	r0, 7
+ 166:	fd cf       	rjmp	.-6      	; 0x162 <TWI_Start+0x20>
+		     while ((TWSR & Mask_Prescaler_val) != S_Transmit_status);
+ 168:	91 b1       	in	r25, 0x01	; 1
+ 16a:	98 7f       	andi	r25, 0xF8	; 248
+ 16c:	98 30       	cpi	r25, 0x08	; 8
+ 16e:	e1 f7       	brne	.-8      	; 0x168 <TWI_Start+0x26>
+			 TWDR = SLA_Value;
+ 170:	83 b9       	out	0x03, r24	; 3
+			 SET_BIT(TWCR,TWEN_bit);
+ 172:	86 b7       	in	r24, 0x36	; 54
+ 174:	84 60       	ori	r24, 0x04	; 4
+ 176:	86 bf       	out	0x36, r24	; 54
+			 SET_BIT(TWCR,TWINT_bit);
+ 178:	86 b7       	in	r24, 0x36	; 54
+ 17a:	80 68       	ori	r24, 0x80	; 128
+ 17c:	86 bf       	out	0x36, r24	; 54
+			 while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 17e:	06 b6       	in	r0, 0x36	; 54
+ 180:	07 fe       	sbrs	r0, 7
+ 182:	fd cf       	rjmp	.-6      	; 0x17e <TWI_Start+0x3c>
+			 while ((TWSR & Mask_Prescaler_val) != SLA_RW_Transmit_status);
+ 184:	81 b1       	in	r24, 0x01	; 1
+ 186:	88 7f       	andi	r24, 0xF8	; 248
+ 188:	88 31       	cpi	r24, 0x18	; 24
+ 18a:	e1 f7       	brne	.-8      	; 0x184 <TWI_Start+0x42>
+ 18c:	08 95       	ret
+		case Master_Receiver:
+		break;
+		case Slave_Transmitter:
+		break;
+		case Slave_Receiver:
+		     TWAR = SLA_Value;
+ 18e:	82 b9       	out	0x02, r24	; 2
+			 SET_BIT(TWCR,TWEN_bit);
+ 190:	86 b7       	in	r24, 0x36	; 54
+ 192:	84 60       	ori	r24, 0x04	; 4
+ 194:	86 bf       	out	0x36, r24	; 54
+			 SET_BIT(TWCR,TWEA_bit);
+ 196:	86 b7       	in	r24, 0x36	; 54
+ 198:	80 64       	ori	r24, 0x40	; 64
+ 19a:	86 bf       	out	0x36, r24	; 54
+			 SET_BIT(TWCR,TWINT_bit);
+ 19c:	86 b7       	in	r24, 0x36	; 54
+ 19e:	80 68       	ori	r24, 0x80	; 128
+ 1a0:	86 bf       	out	0x36, r24	; 54
+			 while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 1a2:	06 b6       	in	r0, 0x36	; 54
+ 1a4:	07 fe       	sbrs	r0, 7
+ 1a6:	fd cf       	rjmp	.-6      	; 0x1a2 <TWI_Start+0x60>
+			 while ((TWSR & Mask_Prescaler_val) != Own_SLA_A_Returned_status);
+ 1a8:	81 b1       	in	r24, 0x01	; 1
+ 1aa:	88 7f       	andi	r24, 0xF8	; 248
+ 1ac:	80 36       	cpi	r24, 0x60	; 96
+ 1ae:	e1 f7       	brne	.-8      	; 0x1a8 <TWI_Start+0x66>
+ 1b0:	08 95       	ret
+
+000001b2 <TWI_Write_Byte>:
+		     break;
+	}
+}
+void TWI_Write_Byte(uint_8 T_Data)
+{
+	TWDR = T_Data;
+ 1b2:	83 b9       	out	0x03, r24	; 3
+	SET_BIT(TWCR,TWEN_bit);
+ 1b4:	86 b7       	in	r24, 0x36	; 54
+ 1b6:	84 60       	ori	r24, 0x04	; 4
+ 1b8:	86 bf       	out	0x36, r24	; 54
+	SET_BIT(TWCR,TWINT_bit);
+ 1ba:	86 b7       	in	r24, 0x36	; 54
+ 1bc:	80 68       	ori	r24, 0x80	; 128
+ 1be:	86 bf       	out	0x36, r24	; 54
+	while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 1c0:	06 b6       	in	r0, 0x36	; 54
+ 1c2:	07 fe       	sbrs	r0, 7
+ 1c4:	fd cf       	rjmp	.-6      	; 0x1c0 <TWI_Write_Byte+0xe>
+	while ((TWSR & Mask_Prescaler_val) != Data_Transmit_status);
+ 1c6:	81 b1       	in	r24, 0x01	; 1
+ 1c8:	88 7f       	andi	r24, 0xF8	; 248
+ 1ca:	88 32       	cpi	r24, 0x28	; 40
+ 1cc:	e1 f7       	brne	.-8      	; 0x1c6 <TWI_Write_Byte+0x14>
+}
+ 1ce:	08 95       	ret
+
+000001d0 <TWI_Stop>:
+	return TWDR;
+}
+
+void TWI_Stop()												/* I2C stop function */
+{
+	SET_BIT(TWCR,TWEN_bit);
+ 1d0:	86 b7       	in	r24, 0x36	; 54
+ 1d2:	84 60       	ori	r24, 0x04	; 4
+ 1d4:	86 bf       	out	0x36, r24	; 54
+	SET_BIT(TWCR,TWINT_bit);
+ 1d6:	86 b7       	in	r24, 0x36	; 54
+ 1d8:	80 68       	ori	r24, 0x80	; 128
+ 1da:	86 bf       	out	0x36, r24	; 54
+	SET_BIT(TWCR,TWSTO_bit);
+ 1dc:	86 b7       	in	r24, 0x36	; 54
+ 1de:	80 61       	ori	r24, 0x10	; 16
+ 1e0:	86 bf       	out	0x36, r24	; 54
+	while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 1e2:	06 b6       	in	r0, 0x36	; 54
+ 1e4:	07 fe       	sbrs	r0, 7
+ 1e6:	fd cf       	rjmp	.-6      	; 0x1e2 <TWI_Stop+0x12>
+	while (READ_BIT(TWCR,TWSTO_bit) !=0);								/* Wait until stop condition execution */
+ 1e8:	06 b6       	in	r0, 0x36	; 54
+ 1ea:	04 fc       	sbrc	r0, 4
+ 1ec:	fd cf       	rjmp	.-6      	; 0x1e8 <TWI_Stop+0x18>
+ 1ee:	08 95       	ret
+
+000001f0 <__udivmodsi4>:
+ 1f0:	a1 e2       	ldi	r26, 0x21	; 33
+ 1f2:	1a 2e       	mov	r1, r26
+ 1f4:	aa 1b       	sub	r26, r26
+ 1f6:	bb 1b       	sub	r27, r27
+ 1f8:	fd 01       	movw	r30, r26
+ 1fa:	0d c0       	rjmp	.+26     	; 0x216 <__udivmodsi4_ep>
+
+000001fc <__udivmodsi4_loop>:
+ 1fc:	aa 1f       	adc	r26, r26
+ 1fe:	bb 1f       	adc	r27, r27
+ 200:	ee 1f       	adc	r30, r30
+ 202:	ff 1f       	adc	r31, r31
+ 204:	a2 17       	cp	r26, r18
+ 206:	b3 07       	cpc	r27, r19
+ 208:	e4 07       	cpc	r30, r20
+ 20a:	f5 07       	cpc	r31, r21
+ 20c:	20 f0       	brcs	.+8      	; 0x216 <__udivmodsi4_ep>
+ 20e:	a2 1b       	sub	r26, r18
+ 210:	b3 0b       	sbc	r27, r19
+ 212:	e4 0b       	sbc	r30, r20
+ 214:	f5 0b       	sbc	r31, r21
+
+00000216 <__udivmodsi4_ep>:
+ 216:	66 1f       	adc	r22, r22
+ 218:	77 1f       	adc	r23, r23
+ 21a:	88 1f       	adc	r24, r24
+ 21c:	99 1f       	adc	r25, r25
+ 21e:	1a 94       	dec	r1
+ 220:	69 f7       	brne	.-38     	; 0x1fc <__udivmodsi4_loop>
+ 222:	60 95       	com	r22
+ 224:	70 95       	com	r23
+ 226:	80 95       	com	r24
+ 228:	90 95       	com	r25
+ 22a:	9b 01       	movw	r18, r22
+ 22c:	ac 01       	movw	r20, r24
+ 22e:	bd 01       	movw	r22, r26
+ 230:	cf 01       	movw	r24, r30
+ 232:	08 95       	ret
+
+00000234 <_exit>:
+ 234:	f8 94       	cli
+
+00000236 <__stop_program>:
+ 236:	ff cf       	rjmp	.-2      	; 0x236 <__stop_program>

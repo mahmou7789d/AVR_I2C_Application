@@ -10,7 +10,11 @@
 
 int main(void)
 {
+	Master_Init_system();
+	Master_Control_system();
+	Master_Control_system();
     while(1)
     {
+		
     }
 }

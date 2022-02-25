@@ -9,7 +9,7 @@
 
 TWi_Micro_data TWI_1={0};
 
-void TWI_INIT(uint_8 SCL_F) /* master - F_SCL - No interrupts*/
+void TWI_INIT(uint_32 SCL_F) /* master - F_SCL - No interrupts*/
 {
 	/*Enable I2C*/
 	uint_8 Presaler_Val=0;
@@ -80,6 +80,7 @@ void TWI_Start(uint_8 SLA_Value)
 			 SET_BIT(TWCR,TWINT_bit);
 			 while (READ_BIT(TWCR,TWINT_bit) ==0);
 			 while ((TWSR & Mask_Prescaler_val) != Own_SLA_A_Returned_status);
+			 break;
 		default:
 		     break;
 	}
@@ -93,15 +94,25 @@ void TWI_Write_Byte(uint_8 T_Data)
 	while ((TWSR & Mask_Prescaler_val) != Data_Transmit_status);
 	
 }
+void Set_SLA_Value(uint_8 SLA_Value)
+{
+	TWAR = SLA_Value;
+}
 
 uint_8 TWI_Read_Byte()
 {
+	
+	SET_BIT(TWCR,TWEN_bit);
+	SET_BIT(TWCR,TWEA_bit);
+	SET_BIT(TWCR,TWINT_bit);
+	while (READ_BIT(TWCR,TWINT_bit) ==0);
+	while ((TWSR & Mask_Prescaler_val) != Own_SLA_A_Returned_status);
 	SET_BIT(TWCR,TWEN_bit);
 	SET_BIT(TWCR,TWEA_bit);
 	SET_BIT(TWCR,TWINT_bit);
 	while (READ_BIT(TWCR,TWINT_bit) ==0);
 	while ((TWSR & Mask_Prescaler_val) != Data_Rec_A_Returned_status);
-	return TWAR;
+	return TWDR;
 }
 
 void TWI_Stop()												/* I2C stop function */
