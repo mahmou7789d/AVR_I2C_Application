@@ -9,9 +9,9 @@
 #ifndef MASTER_APP_H_
 #define MASTER_APP_H_
 
-void Master_Init_system();
+void Master_Init_system_1();
 
-void Master_Control_system();
+void Master_Control_system_1();
 
 
 #endif /* MASTER_APP_H_ */
