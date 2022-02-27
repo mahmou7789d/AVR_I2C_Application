@@ -3,27 +3,27 @@ Slave_Code.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000360  00000000  00000000  00000074  2**1
+  0 .text         00000340  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .bss          00000005  00800060  00800060  000003d4  2**0
+  1 .bss          00000005  00800060  00800060  000003b4  2**0
                   ALLOC
-  2 .comment      00000030  00000000  00000000  000003d4  2**0
+  2 .comment      00000030  00000000  00000000  000003b4  2**0
                   CONTENTS, READONLY
-  3 .debug_aranges 00000148  00000000  00000000  00000404  2**0
+  3 .debug_aranges 00000160  00000000  00000000  000003e4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_info   00001132  00000000  00000000  0000054c  2**0
+  4 .debug_info   000011c2  00000000  00000000  00000544  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_abbrev 0000056b  00000000  00000000  0000167e  2**0
+  5 .debug_abbrev 00000575  00000000  00000000  00001706  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_line   000005a4  00000000  00000000  00001be9  2**0
+  6 .debug_line   000005eb  00000000  00000000  00001c7b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_frame  00000228  00000000  00000000  00002190  2**2
+  7 .debug_frame  00000258  00000000  00000000  00002268  2**2
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    00000698  00000000  00000000  000023b8  2**0
+  8 .debug_str    000006e7  00000000  00000000  000024c0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    000005ef  00000000  00000000  00002a50  2**0
+  9 .debug_loc    00000649  00000000  00000000  00002ba7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 000000f8  00000000  00000000  0000303f  2**0
+ 10 .debug_ranges 00000110  00000000  00000000  000031f0  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -73,16 +73,16 @@ Disassembly of section .text:
   6c:	b2 07       	cpc	r27, r18
   6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
   70:	0e 94 50 00 	call	0xa0	; 0xa0 <main>
-  74:	0c 94 ae 01 	jmp	0x35c	; 0x35c <_exit>
+  74:	0c 94 9e 01 	jmp	0x33c	; 0x33c <_exit>
 
 00000078 <__bad_interrupt>:
   78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-0000007c <Slave_Init_system>:
+0000007c <Slave_Init_system_1>:
 #include <Slave_app.h>
 uint_8 Received_Data =0;
 
-void Slave_Init_system()
+void Slave_Init_system_1()
 {
 	TWI_1.Micro_state = Slave_Receiver;
   7c:	83 e0       	ldi	r24, 0x03	; 3
@@ -90,21 +90,20 @@ void Slave_Init_system()
 	TWI_1.Presaler_Val = No_Presaler;
   82:	10 92 62 00 	sts	0x0062, r1
 	
-	LCD_Init();
+	LCD_Init(); 
   86:	0e 94 92 00 	call	0x124	; 0x124 <LCD_Init>
 	Set_SLA_Value(0b11100000);
   8a:	80 ee       	ldi	r24, 0xE0	; 224
   8c:	0e 94 8a 01 	call	0x314	; 0x314 <Set_SLA_Value>
   90:	08 95       	ret
 
-00000092 <Slave_Control_system>:
+00000092 <Slave_Control_system_1>:
 	
 }
-
-void Slave_Control_system()
+void Slave_Control_system_1()
 {
-	Received_Data =TWI_Read_Byte();
-  92:	0e 94 8c 01 	call	0x318	; 0x318 <TWI_Read_Byte>
+	Received_Data =TWI_Read_Byte_Ack();
+  92:	0e 94 8c 01 	call	0x318	; 0x318 <TWI_Read_Byte_Ack>
   96:	80 93 60 00 	sts	0x0060, r24
 	Send_char_LCD(Received_Data);
   9a:	0e 94 de 00 	call	0x1bc	; 0x1bc <Send_char_LCD>
@@ -116,12 +115,12 @@ void Slave_Control_system()
 
 int main(void)
 {
-	Slave_Init_system();
-  a0:	0e 94 3e 00 	call	0x7c	; 0x7c <Slave_Init_system>
+	Slave_Init_system_1();
+  a0:	0e 94 3e 00 	call	0x7c	; 0x7c <Slave_Init_system_1>
     while(1)
     {
-		Slave_Control_system();
-  a4:	0e 94 49 00 	call	0x92	; 0x92 <Slave_Control_system>
+		Slave_Control_system_1();
+  a4:	0e 94 49 00 	call	0x92	; 0x92 <Slave_Control_system_1>
   a8:	fd cf       	rjmp	.-6      	; 0xa4 <main+0x4>
 
 000000aa <Set_Enable_Bit>:
@@ -564,69 +563,49 @@ void GPIO_Write_High_Nibble(uint_8 Port_Name,uint_8 High_Nibble_value)
  312:	08 95       	ret
 
 00000314 <Set_SLA_Value>:
-	 SET_BIT(TWCR,TWSTO_bit);
- }
+	while ((TWSR & Mask_Prescaler_val) != Data_Transmit_status);
+}
 
- void Set_SLA_Value(uint_8 address)
- {
-	 TWAR=address;
+void Set_SLA_Value(uint_8 address)
+{
+	TWAR=address;
  314:	82 b9       	out	0x02, r24	; 2
  316:	08 95       	ret
 
-00000318 <TWI_Read_Byte>:
- }
-
- uint_8 TWI_Read_Byte(void)
- {
-	 
-	 SET_BIT(TWCR,TWEN_bit);
+00000318 <TWI_Read_Byte_Ack>:
+	SET_BIT(TWCR,TWINT_bit);
+	SET_BIT(TWCR,TWSTO_bit);
+}
+uint_8 TWI_Read_Byte_Ack(void)
+{
+	SET_BIT(TWCR,TWEN_bit);
  318:	86 b7       	in	r24, 0x36	; 54
  31a:	84 60       	ori	r24, 0x04	; 4
  31c:	86 bf       	out	0x36, r24	; 54
-	 SET_BIT(TWCR,TWEA_bit);
+	SET_BIT(TWCR,TWEA_bit);
  31e:	86 b7       	in	r24, 0x36	; 54
  320:	80 64       	ori	r24, 0x40	; 64
  322:	86 bf       	out	0x36, r24	; 54
-	 SET_BIT(TWCR,TWINT_bit);
+	SET_BIT(TWCR,TWINT_bit);
  324:	86 b7       	in	r24, 0x36	; 54
  326:	80 68       	ori	r24, 0x80	; 128
  328:	86 bf       	out	0x36, r24	; 54
-	 while(READ_BIT(TWCR,TWINT_bit)==0);
+	while (READ_BIT(TWCR,TWINT_bit) ==0);
  32a:	06 b6       	in	r0, 0x36	; 54
  32c:	07 fe       	sbrs	r0, 7
- 32e:	fd cf       	rjmp	.-6      	; 0x32a <TWI_Read_Byte+0x12>
-	 while ((TWSR & Mask_Prescaler_val) != Own_SLA_A_Returned_status); // own SLA+W has been received and ACK has been returned
+ 32e:	fd cf       	rjmp	.-6      	; 0x32a <TWI_Read_Byte_Ack+0x12>
+	while ((TWSR & Mask_Prescaler_val) != Data_Rec_A_Returned_status);
  330:	81 b1       	in	r24, 0x01	; 1
  332:	88 7f       	andi	r24, 0xF8	; 248
- 334:	80 36       	cpi	r24, 0x60	; 96
- 336:	e1 f7       	brne	.-8      	; 0x330 <TWI_Read_Byte+0x18>
-	 SET_BIT(TWCR,TWEN_bit);
- 338:	86 b7       	in	r24, 0x36	; 54
- 33a:	84 60       	ori	r24, 0x04	; 4
- 33c:	86 bf       	out	0x36, r24	; 54
-	 SET_BIT(TWCR,TWEA_bit);
- 33e:	86 b7       	in	r24, 0x36	; 54
- 340:	80 64       	ori	r24, 0x40	; 64
- 342:	86 bf       	out	0x36, r24	; 54
-	 SET_BIT(TWCR,TWINT_bit);
- 344:	86 b7       	in	r24, 0x36	; 54
- 346:	80 68       	ori	r24, 0x80	; 128
- 348:	86 bf       	out	0x36, r24	; 54
-	 while (READ_BIT(TWCR,TWINT_bit) ==0);
- 34a:	06 b6       	in	r0, 0x36	; 54
- 34c:	07 fe       	sbrs	r0, 7
- 34e:	fd cf       	rjmp	.-6      	; 0x34a <TWI_Read_Byte+0x32>
-	 while ((TWSR & Mask_Prescaler_val) != Data_Rec_A_Returned_status);
- 350:	81 b1       	in	r24, 0x01	; 1
- 352:	88 7f       	andi	r24, 0xF8	; 248
- 354:	80 38       	cpi	r24, 0x80	; 128
- 356:	e1 f7       	brne	.-8      	; 0x350 <TWI_Read_Byte+0x38>
-	 return TWDR;
- 358:	83 b1       	in	r24, 0x03	; 3
- 35a:	08 95       	ret
+ 334:	80 38       	cpi	r24, 0x80	; 128
+ 336:	e1 f7       	brne	.-8      	; 0x330 <TWI_Read_Byte_Ack+0x18>
+	return TWDR;
+ 338:	83 b1       	in	r24, 0x03	; 3
+}
+ 33a:	08 95       	ret
 
-0000035c <_exit>:
- 35c:	f8 94       	cli
+0000033c <_exit>:
+ 33c:	f8 94       	cli
 
-0000035e <__stop_program>:
- 35e:	ff cf       	rjmp	.-2      	; 0x35e <__stop_program>
+0000033e <__stop_program>:
+ 33e:	ff cf       	rjmp	.-2      	; 0x33e <__stop_program>

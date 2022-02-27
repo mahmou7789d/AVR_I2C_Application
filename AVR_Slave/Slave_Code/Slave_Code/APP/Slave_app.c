@@ -16,13 +16,13 @@ void Slave_Init_system_1()
 	TWI_1.Micro_state = Slave_Receiver;
 	TWI_1.Presaler_Val = No_Presaler;
 	
-	LCD_Init();
+	LCD_Init(); 
 	Set_SLA_Value(0b11100000);
 	
 }
-v oid Slave_Control_system_1()
+void Slave_Control_system_1()
 {
-	Received_Data =TWI_Read_Byte();
+	Received_Data =TWI_Read_Byte_Ack();
 	Send_char_LCD(Received_Data);
 }
 

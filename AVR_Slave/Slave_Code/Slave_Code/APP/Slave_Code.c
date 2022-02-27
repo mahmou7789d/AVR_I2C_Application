@@ -10,9 +10,9 @@
 
 int main(void)
 {
-	Slave_Init_system();
+	Slave_Init_system_1();
     while(1)
     {
-		Slave_Control_system();
+		Slave_Control_system_1();
     }
 }
