@@ -10,9 +10,8 @@
 
 int main(void)
 {
-	Master_Init_system();
-	Master_Control_system();
-	Master_Control_system();
+	Master_Init_system_2();
+	Master_Control_system_2();
     while(1)
     {
 		

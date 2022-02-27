@@ -3,27 +3,27 @@ Master_Code.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000228  00000000  00000000  00000074  2**1
+  0 .text         000004ec  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .bss          00000005  00800060  00800060  0000029c  2**0
+  1 .bss          00000005  00800060  00800060  00000560  2**0
                   ALLOC
-  2 .comment      00000030  00000000  00000000  0000029c  2**0
+  2 .comment      00000030  00000000  00000000  00000560  2**0
                   CONTENTS, READONLY
-  3 .debug_aranges 00000090  00000000  00000000  000002cc  2**0
+  3 .debug_aranges 00000170  00000000  00000000  00000590  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_info   000005d3  00000000  00000000  0000035c  2**0
+  4 .debug_info   00001431  00000000  00000000  00000700  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_abbrev 000002d8  00000000  00000000  0000092f  2**0
+  5 .debug_abbrev 00000610  00000000  00000000  00001b31  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_line   000002fd  00000000  00000000  00000c07  2**0
+  6 .debug_line   00000725  00000000  00000000  00002141  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_frame  000000d4  00000000  00000000  00000f04  2**2
+  7 .debug_frame  00000278  00000000  00000000  00002868  2**2
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    000003ca  00000000  00000000  00000fd8  2**0
+  8 .debug_str    00000716  00000000  00000000  00002ae0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    000001ca  00000000  00000000  000013a2  2**0
+  9 .debug_loc    00000691  00000000  00000000  000031f6  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 00000060  00000000  00000000  0000156c  2**0
+ 10 .debug_ranges 00000120  00000000  00000000  00003887  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -72,366 +72,879 @@ Disassembly of section .text:
   6a:	a5 36       	cpi	r26, 0x65	; 101
   6c:	b2 07       	cpc	r27, r18
   6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
-  70:	0e 94 68 00 	call	0xd0	; 0xd0 <main>
-  74:	0c 94 12 01 	jmp	0x224	; 0x224 <_exit>
+  70:	0e 94 7e 00 	call	0xfc	; 0xfc <main>
+  74:	0c 94 74 02 	jmp	0x4e8	; 0x4e8 <_exit>
 
 00000078 <__bad_interrupt>:
   78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-0000007c <Master_Init_system>:
-#include <util/delay.h>
-unsigned char counter=0;
-void Master_Init_system()
-{
-	
-	TWI_1.Presaler_Val=No_Presaler;
-  7c:	10 92 62 00 	sts	0x0062, r1
-	TWI_1.Micro_state = Master_Transmitter;
-  80:	10 92 64 00 	sts	0x0064, r1
-	TWI_INIT(50000);
-  84:	60 e5       	ldi	r22, 0x50	; 80
-  86:	73 ec       	ldi	r23, 0xC3	; 195
-  88:	80 e0       	ldi	r24, 0x00	; 0
-  8a:	90 e0       	ldi	r25, 0x00	; 0
-  8c:	0e 94 6f 00 	call	0xde	; 0xde <TWI_INIT>
-  90:	08 95       	ret
-
-00000092 <Master_Control_system>:
-	*/
+0000007c <Master_Init_system_2>:
+	}
 }
 
-void Master_Control_system()
+void Master_Init_system_2()
 {
-	while(counter<10)
-  92:	80 91 60 00 	lds	r24, 0x0060
-  96:	8a 30       	cpi	r24, 0x0A	; 10
-  98:	d0 f4       	brcc	.+52     	; 0xce <Master_Control_system+0x3c>
+	LCD_Init();
+  7c:	0e 94 c0 00 	call	0x180	; 0x180 <LCD_Init>
+	TWI_1.Presaler_Val=No_Presaler;
+  80:	10 92 62 00 	sts	0x0062, r1
+	TWI_1.Micro_state = Master_Transmitter;
+  84:	10 92 64 00 	sts	0x0064, r1
+	TWI_INIT(50000);
+  88:	60 e5       	ldi	r22, 0x50	; 80
+  8a:	73 ec       	ldi	r23, 0xC3	; 195
+  8c:	80 e0       	ldi	r24, 0x00	; 0
+  8e:	90 e0       	ldi	r25, 0x00	; 0
+  90:	0e 94 b8 01 	call	0x370	; 0x370 <TWI_INIT>
+  94:	08 95       	ret
+
+00000096 <Master_Control_system_2>:
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-  9a:	2f ef       	ldi	r18, 0xFF	; 255
-  9c:	84 e3       	ldi	r24, 0x34	; 52
-  9e:	9c e0       	ldi	r25, 0x0C	; 12
-  a0:	21 50       	subi	r18, 0x01	; 1
-  a2:	80 40       	sbci	r24, 0x00	; 0
-  a4:	90 40       	sbci	r25, 0x00	; 0
-  a6:	e1 f7       	brne	.-8      	; 0xa0 <Master_Control_system+0xe>
-  a8:	00 c0       	rjmp	.+0      	; 0xaa <Master_Control_system+0x18>
-  aa:	00 00       	nop
-	{
-		_delay_ms(500);
-		//I2C_start(); // transmit start condition
-		TWI_Start(0b11100000); // transmit SLA+W
-  ac:	80 ee       	ldi	r24, 0xE0	; 224
-  ae:	0e 94 a3 00 	call	0x146	; 0x146 <TWI_Start>
-		TWI_Write_Byte(counter+48); // transmit data
-  b2:	80 91 60 00 	lds	r24, 0x0060
-  b6:	80 5d       	subi	r24, 0xD0	; 208
-  b8:	0e 94 db 00 	call	0x1b6	; 0x1b6 <TWI_Write_Byte>
-		TWI_Stop(); // transmit stop condition
-  bc:	0e 94 e6 00 	call	0x1cc	; 0x1cc <TWI_Stop>
-		counter++;
-  c0:	80 91 60 00 	lds	r24, 0x0060
-  c4:	8f 5f       	subi	r24, 0xFF	; 255
-  c6:	80 93 60 00 	sts	0x0060, r24
-	*/
-}
+  96:	2f ef       	ldi	r18, 0xFF	; 255
+  98:	84 e3       	ldi	r24, 0x34	; 52
+  9a:	9c e0       	ldi	r25, 0x0C	; 12
+  9c:	21 50       	subi	r18, 0x01	; 1
+  9e:	80 40       	sbci	r24, 0x00	; 0
+  a0:	90 40       	sbci	r25, 0x00	; 0
+  a2:	e1 f7       	brne	.-8      	; 0x9c <Master_Control_system_2+0x6>
+  a4:	00 c0       	rjmp	.+0      	; 0xa6 <Master_Control_system_2+0x10>
+  a6:	00 00       	nop
 
-void Master_Control_system()
+void Master_Control_system_2()
 {
-	while(counter<10)
-  ca:	8a 30       	cpi	r24, 0x0A	; 10
-  cc:	30 f3       	brcs	.-52     	; 0x9a <Master_Control_system+0x8>
-  ce:	08 95       	ret
+	//Write in EEPROM using I2C 
+	_delay_ms(500);
+	TWI_Start(0b10100000);			// transmit SLA+W
+  a8:	80 ea       	ldi	r24, 0xA0	; 160
+  aa:	0e 94 ec 01 	call	0x3d8	; 0x3d8 <TWI_Start>
+	TWI_Write_Byte(0b00000000);		// transmit data
+  ae:	80 e0       	ldi	r24, 0x00	; 0
+  b0:	0e 94 23 02 	call	0x446	; 0x446 <TWI_Write_Byte>
+	TWI_Write_Byte(0x33);
+  b4:	83 e3       	ldi	r24, 0x33	; 51
+  b6:	0e 94 23 02 	call	0x446	; 0x446 <TWI_Write_Byte>
+	TWI_Stop();
+  ba:	0e 94 2e 02 	call	0x45c	; 0x45c <TWI_Stop>
+  be:	2f ef       	ldi	r18, 0xFF	; 255
+  c0:	81 ee       	ldi	r24, 0xE1	; 225
+  c2:	94 e0       	ldi	r25, 0x04	; 4
+  c4:	21 50       	subi	r18, 0x01	; 1
+  c6:	80 40       	sbci	r24, 0x00	; 0
+  c8:	90 40       	sbci	r25, 0x00	; 0
+  ca:	e1 f7       	brne	.-8      	; 0xc4 <Master_Control_system_2+0x2e>
+  cc:	00 c0       	rjmp	.+0      	; 0xce <Master_Control_system_2+0x38>
+  ce:	00 00       	nop
+	
+	//Read in EEPROM using I2C
+	_delay_ms(200);
+	TWI_Start(0b10100000);			// transmit SLA+W
+  d0:	80 ea       	ldi	r24, 0xA0	; 160
+  d2:	0e 94 ec 01 	call	0x3d8	; 0x3d8 <TWI_Start>
+	TWI_Write_Byte(0b00000000);		// transmit data
+  d6:	80 e0       	ldi	r24, 0x00	; 0
+  d8:	0e 94 23 02 	call	0x446	; 0x446 <TWI_Write_Byte>
+	TWI_Repeated_Start();
+  dc:	0e 94 19 02 	call	0x432	; 0x432 <TWI_Repeated_Start>
+	Write_address_For_Read(0b10100001);
+  e0:	81 ea       	ldi	r24, 0xA1	; 161
+  e2:	0e 94 38 02 	call	0x470	; 0x470 <Write_address_For_Read>
+	counter = TWI_Read_Byte_NAck();
+  e6:	0e 94 43 02 	call	0x486	; 0x486 <TWI_Read_Byte_NAck>
+  ea:	80 93 60 00 	sts	0x0060, r24
+	TWI_Stop();
+  ee:	0e 94 2e 02 	call	0x45c	; 0x45c <TWI_Stop>
+	Send_char_LCD(counter);
+  f2:	80 91 60 00 	lds	r24, 0x0060
+  f6:	0e 94 0c 01 	call	0x218	; 0x218 <Send_char_LCD>
+  fa:	08 95       	ret
 
-000000d0 <main>:
+000000fc <main>:
 
 #include <Master_app.h>
 
 int main(void)
 {
-	Master_Init_system();
-  d0:	0e 94 3e 00 	call	0x7c	; 0x7c <Master_Init_system>
-	Master_Control_system();
-  d4:	0e 94 49 00 	call	0x92	; 0x92 <Master_Control_system>
-	Master_Control_system();
-  d8:	0e 94 49 00 	call	0x92	; 0x92 <Master_Control_system>
-  dc:	ff cf       	rjmp	.-2      	; 0xdc <main+0xc>
+	Master_Init_system_2();
+  fc:	0e 94 3e 00 	call	0x7c	; 0x7c <Master_Init_system_2>
+	Master_Control_system_2();
+ 100:	0e 94 4b 00 	call	0x96	; 0x96 <Master_Control_system_2>
+ 104:	ff cf       	rjmp	.-2      	; 0x104 <main+0x8>
 
-000000de <TWI_INIT>:
+00000106 <Set_Enable_Bit>:
+
+#include <LCD.h>
+#include <util/delay.h>
+static void Set_Enable_Bit()
+{
+	GPIO_Pin_Write(Port_B,EN_Pin,HIGH);
+ 106:	41 e0       	ldi	r20, 0x01	; 1
+ 108:	62 e0       	ldi	r22, 0x02	; 2
+ 10a:	86 e3       	ldi	r24, 0x36	; 54
+ 10c:	90 e0       	ldi	r25, 0x00	; 0
+ 10e:	0e 94 6d 01 	call	0x2da	; 0x2da <GPIO_Pin_Write>
+ 112:	8f e9       	ldi	r24, 0x9F	; 159
+ 114:	9f e0       	ldi	r25, 0x0F	; 15
+ 116:	01 97       	sbiw	r24, 0x01	; 1
+ 118:	f1 f7       	brne	.-4      	; 0x116 <Set_Enable_Bit+0x10>
+ 11a:	00 c0       	rjmp	.+0      	; 0x11c <Set_Enable_Bit+0x16>
+ 11c:	00 00       	nop
+	_delay_ms(2);
+	GPIO_Pin_Write(Port_B,EN_Pin,LOW);
+ 11e:	40 e0       	ldi	r20, 0x00	; 0
+ 120:	62 e0       	ldi	r22, 0x02	; 2
+ 122:	86 e3       	ldi	r24, 0x36	; 54
+ 124:	90 e0       	ldi	r25, 0x00	; 0
+ 126:	0e 94 6d 01 	call	0x2da	; 0x2da <GPIO_Pin_Write>
+ 12a:	8f e9       	ldi	r24, 0x9F	; 159
+ 12c:	9f e0       	ldi	r25, 0x0F	; 15
+ 12e:	01 97       	sbiw	r24, 0x01	; 1
+ 130:	f1 f7       	brne	.-4      	; 0x12e <Set_Enable_Bit+0x28>
+ 132:	00 c0       	rjmp	.+0      	; 0x134 <Set_Enable_Bit+0x2e>
+ 134:	00 00       	nop
+ 136:	08 95       	ret
+
+00000138 <Send_Command_LCD>:
+	_delay_ms(10);
+	#endif
+	#endif
+}
+void Send_Command_LCD(uint_8 Command)
+{
+ 138:	cf 93       	push	r28
+ 13a:	c8 2f       	mov	r28, r24
+	GPIO_Pin_Write(Port_B,RS_Pin,LOW);
+	Set_Enable_Bit();
+	_delay_ms(1);
+	#elif defined Four_Bits_Mode
+	#ifdef LCD_UPPER_DATA_PORT
+	GPIO_Write_High_Nibble('B',Command);
+ 13c:	68 2f       	mov	r22, r24
+ 13e:	82 e4       	ldi	r24, 0x42	; 66
+ 140:	0e 94 93 01 	call	0x326	; 0x326 <GPIO_Write_High_Nibble>
+	GPIO_Pin_Write(Port_B,RS_Pin,LOW);
+ 144:	40 e0       	ldi	r20, 0x00	; 0
+ 146:	60 e0       	ldi	r22, 0x00	; 0
+ 148:	86 e3       	ldi	r24, 0x36	; 54
+ 14a:	90 e0       	ldi	r25, 0x00	; 0
+ 14c:	0e 94 6d 01 	call	0x2da	; 0x2da <GPIO_Pin_Write>
+	Set_Enable_Bit();
+ 150:	0e 94 83 00 	call	0x106	; 0x106 <Set_Enable_Bit>
+	GPIO_Write_High_Nibble('B',Command<<4);
+ 154:	6c 2f       	mov	r22, r28
+ 156:	62 95       	swap	r22
+ 158:	60 7f       	andi	r22, 0xF0	; 240
+ 15a:	82 e4       	ldi	r24, 0x42	; 66
+ 15c:	0e 94 93 01 	call	0x326	; 0x326 <GPIO_Write_High_Nibble>
+	GPIO_Pin_Write(Port_B,RS_Pin,LOW);
+ 160:	40 e0       	ldi	r20, 0x00	; 0
+ 162:	60 e0       	ldi	r22, 0x00	; 0
+ 164:	86 e3       	ldi	r24, 0x36	; 54
+ 166:	90 e0       	ldi	r25, 0x00	; 0
+ 168:	0e 94 6d 01 	call	0x2da	; 0x2da <GPIO_Pin_Write>
+	Set_Enable_Bit();
+ 16c:	0e 94 83 00 	call	0x106	; 0x106 <Set_Enable_Bit>
+ 170:	8f ec       	ldi	r24, 0xCF	; 207
+ 172:	97 e0       	ldi	r25, 0x07	; 7
+ 174:	01 97       	sbiw	r24, 0x01	; 1
+ 176:	f1 f7       	brne	.-4      	; 0x174 <Send_Command_LCD+0x3c>
+ 178:	00 c0       	rjmp	.+0      	; 0x17a <Send_Command_LCD+0x42>
+ 17a:	00 00       	nop
+	GPIO_Pin_Write(Port_B,RS_Pin,LOW);
+	Set_Enable_Bit();
+	_delay_ms(1);
+	#endif
+	#endif
+}
+ 17c:	cf 91       	pop	r28
+ 17e:	08 95       	ret
+
+00000180 <LCD_Init>:
+ 180:	2f ef       	ldi	r18, 0xFF	; 255
+ 182:	81 ee       	ldi	r24, 0xE1	; 225
+ 184:	94 e0       	ldi	r25, 0x04	; 4
+ 186:	21 50       	subi	r18, 0x01	; 1
+ 188:	80 40       	sbci	r24, 0x00	; 0
+ 18a:	90 40       	sbci	r25, 0x00	; 0
+ 18c:	e1 f7       	brne	.-8      	; 0x186 <LCD_Init+0x6>
+ 18e:	00 c0       	rjmp	.+0      	; 0x190 <LCD_Init+0x10>
+ 190:	00 00       	nop
+	Send_Command_LCD(Clear_Display);
+	_delay_ms(10);
+	
+	#elif  defined Four_Bits_Mode
+	#ifdef LCD_UPPER_DATA_PORT
+	GPIO_Port_Configuration(Port_B,0XF0);
+ 192:	60 ef       	ldi	r22, 0xF0	; 240
+ 194:	86 e3       	ldi	r24, 0x36	; 54
+ 196:	90 e0       	ldi	r25, 0x00	; 0
+ 198:	0e 94 90 01 	call	0x320	; 0x320 <GPIO_Port_Configuration>
+	GPIO_Pin_Configuration(Port_B,RS_Pin,OUTPUT);
+ 19c:	40 e0       	ldi	r20, 0x00	; 0
+ 19e:	60 e0       	ldi	r22, 0x00	; 0
+ 1a0:	86 e3       	ldi	r24, 0x36	; 54
+ 1a2:	90 e0       	ldi	r25, 0x00	; 0
+ 1a4:	0e 94 30 01 	call	0x260	; 0x260 <GPIO_Pin_Configuration>
+	GPIO_Pin_Configuration(Port_B,EN_Pin,OUTPUT);
+ 1a8:	40 e0       	ldi	r20, 0x00	; 0
+ 1aa:	62 e0       	ldi	r22, 0x02	; 2
+ 1ac:	86 e3       	ldi	r24, 0x36	; 54
+ 1ae:	90 e0       	ldi	r25, 0x00	; 0
+ 1b0:	0e 94 30 01 	call	0x260	; 0x260 <GPIO_Pin_Configuration>
+	GPIO_Pin_Configuration(Port_B,RW_Pin,OUTPUT);
+ 1b4:	40 e0       	ldi	r20, 0x00	; 0
+ 1b6:	61 e0       	ldi	r22, 0x01	; 1
+ 1b8:	86 e3       	ldi	r24, 0x36	; 54
+ 1ba:	90 e0       	ldi	r25, 0x00	; 0
+ 1bc:	0e 94 30 01 	call	0x260	; 0x260 <GPIO_Pin_Configuration>
+	CLEAR_BIT(LCD_CONTROL_BIT_PORT,RW_Pin);
+ 1c0:	a9 98       	cbi	0x15, 1	; 21
+ 1c2:	8f ec       	ldi	r24, 0xCF	; 207
+ 1c4:	97 e0       	ldi	r25, 0x07	; 7
+ 1c6:	01 97       	sbiw	r24, 0x01	; 1
+ 1c8:	f1 f7       	brne	.-4      	; 0x1c6 <LCD_Init+0x46>
+ 1ca:	00 c0       	rjmp	.+0      	; 0x1cc <LCD_Init+0x4c>
+ 1cc:	00 00       	nop
+	_delay_ms(1);
+	Send_Command_LCD(Return_Home);
+ 1ce:	82 e0       	ldi	r24, 0x02	; 2
+ 1d0:	0e 94 9c 00 	call	0x138	; 0x138 <Send_Command_LCD>
+ 1d4:	8f ec       	ldi	r24, 0xCF	; 207
+ 1d6:	97 e0       	ldi	r25, 0x07	; 7
+ 1d8:	01 97       	sbiw	r24, 0x01	; 1
+ 1da:	f1 f7       	brne	.-4      	; 0x1d8 <LCD_Init+0x58>
+ 1dc:	00 c0       	rjmp	.+0      	; 0x1de <LCD_Init+0x5e>
+ 1de:	00 00       	nop
+	_delay_ms(1);
+	Send_Command_LCD(Function_Set_Four_BIT);
+ 1e0:	88 e2       	ldi	r24, 0x28	; 40
+ 1e2:	0e 94 9c 00 	call	0x138	; 0x138 <Send_Command_LCD>
+ 1e6:	8f ec       	ldi	r24, 0xCF	; 207
+ 1e8:	97 e0       	ldi	r25, 0x07	; 7
+ 1ea:	01 97       	sbiw	r24, 0x01	; 1
+ 1ec:	f1 f7       	brne	.-4      	; 0x1ea <LCD_Init+0x6a>
+ 1ee:	00 c0       	rjmp	.+0      	; 0x1f0 <LCD_Init+0x70>
+ 1f0:	00 00       	nop
+	_delay_ms(1);
+	Send_Command_LCD(Display_On_Curser_On);
+ 1f2:	8e e0       	ldi	r24, 0x0E	; 14
+ 1f4:	0e 94 9c 00 	call	0x138	; 0x138 <Send_Command_LCD>
+ 1f8:	8f ec       	ldi	r24, 0xCF	; 207
+ 1fa:	97 e0       	ldi	r25, 0x07	; 7
+ 1fc:	01 97       	sbiw	r24, 0x01	; 1
+ 1fe:	f1 f7       	brne	.-4      	; 0x1fc <LCD_Init+0x7c>
+ 200:	00 c0       	rjmp	.+0      	; 0x202 <LCD_Init+0x82>
+ 202:	00 00       	nop
+	_delay_ms(1);
+	Send_Command_LCD(Clear_Display);
+ 204:	81 e0       	ldi	r24, 0x01	; 1
+ 206:	0e 94 9c 00 	call	0x138	; 0x138 <Send_Command_LCD>
+ 20a:	8f e1       	ldi	r24, 0x1F	; 31
+ 20c:	9e e4       	ldi	r25, 0x4E	; 78
+ 20e:	01 97       	sbiw	r24, 0x01	; 1
+ 210:	f1 f7       	brne	.-4      	; 0x20e <LCD_Init+0x8e>
+ 212:	00 c0       	rjmp	.+0      	; 0x214 <LCD_Init+0x94>
+ 214:	00 00       	nop
+ 216:	08 95       	ret
+
+00000218 <Send_char_LCD>:
+	_delay_ms(1);
+	#endif
+	#endif
+}
+void Send_char_LCD(uint_8 Character)
+{
+ 218:	cf 93       	push	r28
+ 21a:	c8 2f       	mov	r28, r24
+	GPIO_Port_Write(Port_B,Character);
+	GPIO_Pin_Write(Port_B,RS_Pin,HIGH);
+	Set_Enable_Bit();
+	#elif defined Four_Bits_Mode
+	#ifdef LCD_UPPER_DATA_PORT
+	GPIO_Write_High_Nibble('B',Character);
+ 21c:	68 2f       	mov	r22, r24
+ 21e:	82 e4       	ldi	r24, 0x42	; 66
+ 220:	0e 94 93 01 	call	0x326	; 0x326 <GPIO_Write_High_Nibble>
+	GPIO_Pin_Write(Port_B,RS_Pin,HIGH);
+ 224:	41 e0       	ldi	r20, 0x01	; 1
+ 226:	60 e0       	ldi	r22, 0x00	; 0
+ 228:	86 e3       	ldi	r24, 0x36	; 54
+ 22a:	90 e0       	ldi	r25, 0x00	; 0
+ 22c:	0e 94 6d 01 	call	0x2da	; 0x2da <GPIO_Pin_Write>
+	Set_Enable_Bit();
+ 230:	0e 94 83 00 	call	0x106	; 0x106 <Set_Enable_Bit>
+	GPIO_Write_High_Nibble('B',Character<<4);
+ 234:	6c 2f       	mov	r22, r28
+ 236:	62 95       	swap	r22
+ 238:	60 7f       	andi	r22, 0xF0	; 240
+ 23a:	82 e4       	ldi	r24, 0x42	; 66
+ 23c:	0e 94 93 01 	call	0x326	; 0x326 <GPIO_Write_High_Nibble>
+	GPIO_Pin_Write(Port_B,RS_Pin,HIGH);
+ 240:	41 e0       	ldi	r20, 0x01	; 1
+ 242:	60 e0       	ldi	r22, 0x00	; 0
+ 244:	86 e3       	ldi	r24, 0x36	; 54
+ 246:	90 e0       	ldi	r25, 0x00	; 0
+ 248:	0e 94 6d 01 	call	0x2da	; 0x2da <GPIO_Pin_Write>
+	Set_Enable_Bit();
+ 24c:	0e 94 83 00 	call	0x106	; 0x106 <Set_Enable_Bit>
+ 250:	8f ec       	ldi	r24, 0xCF	; 207
+ 252:	97 e0       	ldi	r25, 0x07	; 7
+ 254:	01 97       	sbiw	r24, 0x01	; 1
+ 256:	f1 f7       	brne	.-4      	; 0x254 <Send_char_LCD+0x3c>
+ 258:	00 c0       	rjmp	.+0      	; 0x25a <Send_char_LCD+0x42>
+ 25a:	00 00       	nop
+	GPIO_Pin_Write(Port_B,RS_Pin,HIGH);
+	Set_Enable_Bit();
+	_delay_ms(1);
+	#endif
+	#endif
+}
+ 25c:	cf 91       	pop	r28
+ 25e:	08 95       	ret
+
+00000260 <GPIO_Pin_Configuration>:
+		default:
+		break;
+	}
+}
+void GPIO_Pin_Configuration (GPIO_Register* Chip_port,GPIO_pin_number pin_num,GPIO_pin_Type  O_Or_I_Mode )
+{
+ 260:	fc 01       	movw	r30, r24
+	 //because of the factor by which we can select the functionality of the function is the Mode of pin , we perform Switch case on the mode 
+	 switch (O_Or_I_Mode)  // switch is more fast and readable than if because we know the three available options
+ 262:	41 30       	cpi	r20, 0x01	; 1
+ 264:	21 f0       	breq	.+8      	; 0x26e <GPIO_Pin_Configuration+0xe>
+ 266:	38 f1       	brcs	.+78     	; 0x2b6 <GPIO_Pin_Configuration+0x56>
+ 268:	42 30       	cpi	r20, 0x02	; 2
+ 26a:	99 f0       	breq	.+38     	; 0x292 <GPIO_Pin_Configuration+0x32>
+ 26c:	08 95       	ret
+	 {
+		case INPUT_Float:
+		CLEAR_BIT(Chip_port->DDR ,pin_num);
+ 26e:	21 81       	ldd	r18, Z+1	; 0x01
+ 270:	81 e0       	ldi	r24, 0x01	; 1
+ 272:	90 e0       	ldi	r25, 0x00	; 0
+ 274:	ac 01       	movw	r20, r24
+ 276:	02 c0       	rjmp	.+4      	; 0x27c <GPIO_Pin_Configuration+0x1c>
+ 278:	44 0f       	add	r20, r20
+ 27a:	55 1f       	adc	r21, r21
+ 27c:	6a 95       	dec	r22
+ 27e:	e2 f7       	brpl	.-8      	; 0x278 <GPIO_Pin_Configuration+0x18>
+ 280:	ba 01       	movw	r22, r20
+ 282:	60 95       	com	r22
+ 284:	86 2f       	mov	r24, r22
+ 286:	82 23       	and	r24, r18
+ 288:	81 83       	std	Z+1, r24	; 0x01
+		CLEAR_BIT(Chip_port->PORT,pin_num);
+ 28a:	82 81       	ldd	r24, Z+2	; 0x02
+ 28c:	68 23       	and	r22, r24
+ 28e:	62 83       	std	Z+2, r22	; 0x02
+		break;
+ 290:	08 95       	ret
+		case INPUT_Pullup:
+		CLEAR_BIT(Chip_port->DDR ,pin_num);
+ 292:	21 81       	ldd	r18, Z+1	; 0x01
+ 294:	81 e0       	ldi	r24, 0x01	; 1
+ 296:	90 e0       	ldi	r25, 0x00	; 0
+ 298:	ac 01       	movw	r20, r24
+ 29a:	02 c0       	rjmp	.+4      	; 0x2a0 <GPIO_Pin_Configuration+0x40>
+ 29c:	44 0f       	add	r20, r20
+ 29e:	55 1f       	adc	r21, r21
+ 2a0:	6a 95       	dec	r22
+ 2a2:	e2 f7       	brpl	.-8      	; 0x29c <GPIO_Pin_Configuration+0x3c>
+ 2a4:	ba 01       	movw	r22, r20
+ 2a6:	84 2f       	mov	r24, r20
+ 2a8:	80 95       	com	r24
+ 2aa:	82 23       	and	r24, r18
+ 2ac:	81 83       	std	Z+1, r24	; 0x01
+		SET_BIT  (Chip_port->PORT,pin_num);
+ 2ae:	82 81       	ldd	r24, Z+2	; 0x02
+ 2b0:	68 2b       	or	r22, r24
+ 2b2:	62 83       	std	Z+2, r22	; 0x02
+		break;
+ 2b4:	08 95       	ret
+		case OUTPUT:
+		SET_BIT  (Chip_port->DDR ,pin_num);
+ 2b6:	21 81       	ldd	r18, Z+1	; 0x01
+ 2b8:	81 e0       	ldi	r24, 0x01	; 1
+ 2ba:	90 e0       	ldi	r25, 0x00	; 0
+ 2bc:	ac 01       	movw	r20, r24
+ 2be:	02 c0       	rjmp	.+4      	; 0x2c4 <GPIO_Pin_Configuration+0x64>
+ 2c0:	44 0f       	add	r20, r20
+ 2c2:	55 1f       	adc	r21, r21
+ 2c4:	6a 95       	dec	r22
+ 2c6:	e2 f7       	brpl	.-8      	; 0x2c0 <GPIO_Pin_Configuration+0x60>
+ 2c8:	ba 01       	movw	r22, r20
+ 2ca:	82 2f       	mov	r24, r18
+ 2cc:	84 2b       	or	r24, r20
+ 2ce:	81 83       	std	Z+1, r24	; 0x01
+		CLEAR_BIT(Chip_port->PORT,pin_num);
+ 2d0:	82 81       	ldd	r24, Z+2	; 0x02
+ 2d2:	60 95       	com	r22
+ 2d4:	68 23       	and	r22, r24
+ 2d6:	62 83       	std	Z+2, r22	; 0x02
+ 2d8:	08 95       	ret
+
+000002da <GPIO_Pin_Write>:
+ 	}
+
+}
+void GPIO_Pin_Write(GPIO_Register *Chip_port,GPIO_pin_number pin_num,Digital_pinState Pin_state)
+{
+	 switch(Pin_state)
+ 2da:	44 23       	and	r20, r20
+ 2dc:	89 f0       	breq	.+34     	; 0x300 <GPIO_Pin_Write+0x26>
+ 2de:	41 30       	cpi	r20, 0x01	; 1
+ 2e0:	f1 f4       	brne	.+60     	; 0x31e <GPIO_Pin_Write+0x44>
+	 {
+		case HIGH:
+		SET_BIT(Chip_port->PORT,pin_num);
+ 2e2:	fc 01       	movw	r30, r24
+ 2e4:	42 81       	ldd	r20, Z+2	; 0x02
+ 2e6:	21 e0       	ldi	r18, 0x01	; 1
+ 2e8:	30 e0       	ldi	r19, 0x00	; 0
+ 2ea:	f9 01       	movw	r30, r18
+ 2ec:	02 c0       	rjmp	.+4      	; 0x2f2 <GPIO_Pin_Write+0x18>
+ 2ee:	ee 0f       	add	r30, r30
+ 2f0:	ff 1f       	adc	r31, r31
+ 2f2:	6a 95       	dec	r22
+ 2f4:	e2 f7       	brpl	.-8      	; 0x2ee <GPIO_Pin_Write+0x14>
+ 2f6:	bf 01       	movw	r22, r30
+ 2f8:	64 2b       	or	r22, r20
+ 2fa:	fc 01       	movw	r30, r24
+ 2fc:	62 83       	std	Z+2, r22	; 0x02
+		break;
+ 2fe:	08 95       	ret
+		case LOW:
+		CLEAR_BIT(Chip_port->PORT,pin_num);
+ 300:	fc 01       	movw	r30, r24
+ 302:	42 81       	ldd	r20, Z+2	; 0x02
+ 304:	21 e0       	ldi	r18, 0x01	; 1
+ 306:	30 e0       	ldi	r19, 0x00	; 0
+ 308:	f9 01       	movw	r30, r18
+ 30a:	02 c0       	rjmp	.+4      	; 0x310 <GPIO_Pin_Write+0x36>
+ 30c:	ee 0f       	add	r30, r30
+ 30e:	ff 1f       	adc	r31, r31
+ 310:	6a 95       	dec	r22
+ 312:	e2 f7       	brpl	.-8      	; 0x30c <GPIO_Pin_Write+0x32>
+ 314:	bf 01       	movw	r22, r30
+ 316:	60 95       	com	r22
+ 318:	64 23       	and	r22, r20
+ 31a:	fc 01       	movw	r30, r24
+ 31c:	62 83       	std	Z+2, r22	; 0x02
+ 31e:	08 95       	ret
+
+00000320 <GPIO_Port_Configuration>:
+	/* We Must Check That THe Value Of The configuration Of The Port Does Not exceed The 8 bit (0 <-> 255) */
+	if (port_Value <= Max_uint8_Value && port_Value >= Min_uint8_Value)
+	{
+		/* The Value On The 8 bit DDR To Define Each Pin From The 8 Pins Of The Port As input Or Output */
+		/* equal the port to the 0xFF to get the output */
+		Chip_port->DDR = port_Value;
+ 320:	fc 01       	movw	r30, r24
+ 322:	61 83       	std	Z+1, r22	; 0x01
+ 324:	08 95       	ret
+
+00000326 <GPIO_Write_High_Nibble>:
+}
+
+
+void GPIO_Write_High_Nibble(uint_8 Port_Name,uint_8 High_Nibble_value)
+{
+	High_Nibble_value &=0xf0;
+ 326:	60 7f       	andi	r22, 0xF0	; 240
+	switch(Port_Name)
+ 328:	82 34       	cpi	r24, 0x42	; 66
+ 32a:	79 f0       	breq	.+30     	; 0x34a <GPIO_Write_High_Nibble+0x24>
+ 32c:	18 f4       	brcc	.+6      	; 0x334 <GPIO_Write_High_Nibble+0xe>
+ 32e:	81 34       	cpi	r24, 0x41	; 65
+ 330:	31 f0       	breq	.+12     	; 0x33e <GPIO_Write_High_Nibble+0x18>
+ 332:	08 95       	ret
+ 334:	83 34       	cpi	r24, 0x43	; 67
+ 336:	79 f0       	breq	.+30     	; 0x356 <GPIO_Write_High_Nibble+0x30>
+ 338:	84 34       	cpi	r24, 0x44	; 68
+ 33a:	99 f0       	breq	.+38     	; 0x362 <GPIO_Write_High_Nibble+0x3c>
+ 33c:	08 95       	ret
+	{
+		case 'A':
+		Port_A->PORT &=0x0f;
+ 33e:	8b b3       	in	r24, 0x1b	; 27
+ 340:	8f 70       	andi	r24, 0x0F	; 15
+ 342:	8b bb       	out	0x1b, r24	; 27
+		Port_A->PORT |=High_Nibble_value;
+ 344:	8b b3       	in	r24, 0x1b	; 27
+ 346:	86 2b       	or	r24, r22
+ 348:	8b bb       	out	0x1b, r24	; 27
+		case 'B':
+		Port_B->PORT &=0x0f;
+ 34a:	88 b3       	in	r24, 0x18	; 24
+ 34c:	8f 70       	andi	r24, 0x0F	; 15
+ 34e:	88 bb       	out	0x18, r24	; 24
+		Port_B->PORT |=High_Nibble_value;
+ 350:	88 b3       	in	r24, 0x18	; 24
+ 352:	86 2b       	or	r24, r22
+ 354:	88 bb       	out	0x18, r24	; 24
+		case 'C':
+		Port_C->PORT &=0x0f;
+ 356:	85 b3       	in	r24, 0x15	; 21
+ 358:	8f 70       	andi	r24, 0x0F	; 15
+ 35a:	85 bb       	out	0x15, r24	; 21
+		Port_C->PORT |=High_Nibble_value;
+ 35c:	85 b3       	in	r24, 0x15	; 21
+ 35e:	86 2b       	or	r24, r22
+ 360:	85 bb       	out	0x15, r24	; 21
+		case 'D':
+		Port_D->PORT &=0x0f;
+ 362:	82 b3       	in	r24, 0x12	; 18
+ 364:	8f 70       	andi	r24, 0x0F	; 15
+ 366:	82 bb       	out	0x12, r24	; 18
+		Port_D->PORT |=High_Nibble_value;
+ 368:	82 b3       	in	r24, 0x12	; 18
+ 36a:	68 2b       	or	r22, r24
+ 36c:	62 bb       	out	0x12, r22	; 18
+ 36e:	08 95       	ret
+
+00000370 <TWI_INIT>:
  */ 
 #include <GPIO.h>
 #include <I2C_File.h>
 TWi_Micro_data TWI_1={0};
 void TWI_INIT(uint_32 SCL_F)
 {
-  de:	cf 93       	push	r28
-  e0:	9b 01       	movw	r18, r22
-  e2:	ac 01       	movw	r20, r24
+ 370:	cf 93       	push	r28
+ 372:	9b 01       	movw	r18, r22
+ 374:	ac 01       	movw	r20, r24
 	uint_8 Presaler_Val=0;
 	uint_8 TWSR_Temp =0;
 	switch(TWI_1.Presaler_Val)
-  e4:	80 91 62 00 	lds	r24, 0x0062
-  e8:	81 30       	cpi	r24, 0x01	; 1
-  ea:	41 f0       	breq	.+16     	; 0xfc <TWI_INIT+0x1e>
-  ec:	80 f0       	brcs	.+32     	; 0x10e <TWI_INIT+0x30>
-  ee:	82 30       	cpi	r24, 0x02	; 2
-  f0:	41 f0       	breq	.+16     	; 0x102 <TWI_INIT+0x24>
-  f2:	83 30       	cpi	r24, 0x03	; 3
-  f4:	49 f0       	breq	.+18     	; 0x108 <TWI_INIT+0x2a>
+ 376:	80 91 62 00 	lds	r24, 0x0062
+ 37a:	81 30       	cpi	r24, 0x01	; 1
+ 37c:	41 f0       	breq	.+16     	; 0x38e <TWI_INIT+0x1e>
+ 37e:	80 f0       	brcs	.+32     	; 0x3a0 <TWI_INIT+0x30>
+ 380:	82 30       	cpi	r24, 0x02	; 2
+ 382:	41 f0       	breq	.+16     	; 0x394 <TWI_INIT+0x24>
+ 384:	83 30       	cpi	r24, 0x03	; 3
+ 386:	49 f0       	breq	.+18     	; 0x39a <TWI_INIT+0x2a>
 #include <I2C_File.h>
 TWi_Micro_data TWI_1={0};
 void TWI_INIT(uint_32 SCL_F)
 {
 	uint_8 Presaler_Val=0;
 	uint_8 TWSR_Temp =0;
-  f6:	80 e0       	ldi	r24, 0x00	; 0
+ 388:	80 e0       	ldi	r24, 0x00	; 0
 #include <GPIO.h>
 #include <I2C_File.h>
 TWi_Micro_data TWI_1={0};
 void TWI_INIT(uint_32 SCL_F)
 {
 	uint_8 Presaler_Val=0;
-  f8:	c0 e0       	ldi	r28, 0x00	; 0
-  fa:	0b c0       	rjmp	.+22     	; 0x112 <TWI_INIT+0x34>
+ 38a:	c0 e0       	ldi	r28, 0x00	; 0
+ 38c:	0b c0       	rjmp	.+22     	; 0x3a4 <TWI_INIT+0x34>
 		CLEAR_BIT(TWSR_Temp,TWPS1_bit);
 		Presaler_Val=1;
 		break;
 		case Prescaler_4:
 		SET_BIT(TWSR_Temp,TWPS0_bit);
 		CLEAR_BIT(TWSR_Temp,TWPS1_bit);
-  fc:	81 e0       	ldi	r24, 0x01	; 1
+ 38e:	81 e0       	ldi	r24, 0x01	; 1
 		Presaler_Val=4;
-  fe:	c4 e0       	ldi	r28, 0x04	; 4
+ 390:	c4 e0       	ldi	r28, 0x04	; 4
 		break;
- 100:	08 c0       	rjmp	.+16     	; 0x112 <TWI_INIT+0x34>
+ 392:	08 c0       	rjmp	.+16     	; 0x3a4 <TWI_INIT+0x34>
 		case Prescaler_16:
 		CLEAR_BIT(TWSR_Temp,TWPS0_bit);
 		SET_BIT(TWSR_Temp,TWPS1_bit);
- 102:	82 e0       	ldi	r24, 0x02	; 2
+ 394:	82 e0       	ldi	r24, 0x02	; 2
 		Presaler_Val=16;
- 104:	c0 e1       	ldi	r28, 0x10	; 16
+ 396:	c0 e1       	ldi	r28, 0x10	; 16
 		break;
- 106:	05 c0       	rjmp	.+10     	; 0x112 <TWI_INIT+0x34>
+ 398:	05 c0       	rjmp	.+10     	; 0x3a4 <TWI_INIT+0x34>
 		case Prescaler_64:
 		SET_BIT(TWSR_Temp,TWPS0_bit);
 		SET_BIT(TWSR_Temp,TWPS1_bit);
- 108:	83 e0       	ldi	r24, 0x03	; 3
+ 39a:	83 e0       	ldi	r24, 0x03	; 3
 		Presaler_Val=64;
- 10a:	c0 e4       	ldi	r28, 0x40	; 64
+ 39c:	c0 e4       	ldi	r28, 0x40	; 64
 		break;
- 10c:	02 c0       	rjmp	.+4      	; 0x112 <TWI_INIT+0x34>
+ 39e:	02 c0       	rjmp	.+4      	; 0x3a4 <TWI_INIT+0x34>
 	uint_8 TWSR_Temp =0;
 	switch(TWI_1.Presaler_Val)
 	{
 		case No_Presaler:
 		CLEAR_BIT(TWSR_Temp,TWPS0_bit);
 		CLEAR_BIT(TWSR_Temp,TWPS1_bit);
- 10e:	80 e0       	ldi	r24, 0x00	; 0
+ 3a0:	80 e0       	ldi	r24, 0x00	; 0
 		Presaler_Val=1;
- 110:	c1 e0       	ldi	r28, 0x01	; 1
+ 3a2:	c1 e0       	ldi	r28, 0x01	; 1
 		Presaler_Val=64;
 		break;
 		default:
 		break;
 	}
 	TWSR = TWSR_Temp;
- 112:	81 b9       	out	0x01, r24	; 1
+ 3a4:	81 b9       	out	0x01, r24	; 1
 	TWBR= (uint_8) (((F_CPU/SCL_F)-16) / (2*Presaler_Val));
- 114:	60 e0       	ldi	r22, 0x00	; 0
- 116:	72 e1       	ldi	r23, 0x12	; 18
- 118:	8a e7       	ldi	r24, 0x7A	; 122
- 11a:	90 e0       	ldi	r25, 0x00	; 0
- 11c:	0e 94 f0 00 	call	0x1e0	; 0x1e0 <__udivmodsi4>
- 120:	ca 01       	movw	r24, r20
- 122:	b9 01       	movw	r22, r18
- 124:	60 51       	subi	r22, 0x10	; 16
- 126:	71 09       	sbc	r23, r1
- 128:	81 09       	sbc	r24, r1
- 12a:	91 09       	sbc	r25, r1
- 12c:	2c 2f       	mov	r18, r28
- 12e:	30 e0       	ldi	r19, 0x00	; 0
- 130:	22 0f       	add	r18, r18
- 132:	33 1f       	adc	r19, r19
- 134:	44 27       	eor	r20, r20
- 136:	37 fd       	sbrc	r19, 7
- 138:	40 95       	com	r20
- 13a:	54 2f       	mov	r21, r20
- 13c:	0e 94 f0 00 	call	0x1e0	; 0x1e0 <__udivmodsi4>
- 140:	20 b9       	out	0x00, r18	; 0
+ 3a6:	60 e0       	ldi	r22, 0x00	; 0
+ 3a8:	72 e1       	ldi	r23, 0x12	; 18
+ 3aa:	8a e7       	ldi	r24, 0x7A	; 122
+ 3ac:	90 e0       	ldi	r25, 0x00	; 0
+ 3ae:	0e 94 52 02 	call	0x4a4	; 0x4a4 <__udivmodsi4>
+ 3b2:	ca 01       	movw	r24, r20
+ 3b4:	b9 01       	movw	r22, r18
+ 3b6:	60 51       	subi	r22, 0x10	; 16
+ 3b8:	71 09       	sbc	r23, r1
+ 3ba:	81 09       	sbc	r24, r1
+ 3bc:	91 09       	sbc	r25, r1
+ 3be:	2c 2f       	mov	r18, r28
+ 3c0:	30 e0       	ldi	r19, 0x00	; 0
+ 3c2:	22 0f       	add	r18, r18
+ 3c4:	33 1f       	adc	r19, r19
+ 3c6:	44 27       	eor	r20, r20
+ 3c8:	37 fd       	sbrc	r19, 7
+ 3ca:	40 95       	com	r20
+ 3cc:	54 2f       	mov	r21, r20
+ 3ce:	0e 94 52 02 	call	0x4a4	; 0x4a4 <__udivmodsi4>
+ 3d2:	20 b9       	out	0x00, r18	; 0
 }
- 142:	cf 91       	pop	r28
- 144:	08 95       	ret
+ 3d4:	cf 91       	pop	r28
+ 3d6:	08 95       	ret
 
-00000146 <TWI_Start>:
+000003d8 <TWI_Start>:
 void TWI_Start(uint_8 SLA_Value)
 {
+	uint_8 TWCR_Temp =0;
 	switch(TWI_1.Micro_state)
- 146:	90 91 64 00 	lds	r25, 0x0064
- 14a:	99 23       	and	r25, r25
- 14c:	19 f0       	breq	.+6      	; 0x154 <TWI_Start+0xe>
- 14e:	93 30       	cpi	r25, 0x03	; 3
- 150:	01 f1       	breq	.+64     	; 0x192 <TWI_Start+0x4c>
- 152:	08 95       	ret
+ 3d8:	90 91 64 00 	lds	r25, 0x0064
+ 3dc:	99 23       	and	r25, r25
+ 3de:	19 f0       	breq	.+6      	; 0x3e6 <TWI_Start+0xe>
+ 3e0:	93 30       	cpi	r25, 0x03	; 3
+ 3e2:	a9 f0       	breq	.+42     	; 0x40e <TWI_Start+0x36>
+ 3e4:	08 95       	ret
 	{
 		case Master_Transmitter:
-		SET_BIT(TWCR,TWEN_bit);
- 154:	96 b7       	in	r25, 0x36	; 54
- 156:	94 60       	ori	r25, 0x04	; 4
- 158:	96 bf       	out	0x36, r25	; 54
-		SET_BIT(TWCR,TWINT_bit);
- 15a:	96 b7       	in	r25, 0x36	; 54
- 15c:	90 68       	ori	r25, 0x80	; 128
- 15e:	96 bf       	out	0x36, r25	; 54
-		SET_BIT(TWCR,TWSTA_bit);
- 160:	96 b7       	in	r25, 0x36	; 54
- 162:	90 62       	ori	r25, 0x20	; 32
- 164:	96 bf       	out	0x36, r25	; 54
-		while (READ_BIT(TWCR,TWINT_bit) ==0);
- 166:	06 b6       	in	r0, 0x36	; 54
- 168:	07 fe       	sbrs	r0, 7
- 16a:	fd cf       	rjmp	.-6      	; 0x166 <TWI_Start+0x20>
-		while ((TWSR & Mask_Prescaler_val) != S_Transmit_status);
- 16c:	91 b1       	in	r25, 0x01	; 1
- 16e:	98 7f       	andi	r25, 0xF8	; 248
- 170:	98 30       	cpi	r25, 0x08	; 8
- 172:	e1 f7       	brne	.-8      	; 0x16c <TWI_Start+0x26>
-		TWDR = SLA_Value;
- 174:	83 b9       	out	0x03, r24	; 3
-		SET_BIT(TWCR,TWEN_bit);
- 176:	86 b7       	in	r24, 0x36	; 54
- 178:	84 60       	ori	r24, 0x04	; 4
- 17a:	86 bf       	out	0x36, r24	; 54
-		SET_BIT(TWCR,TWINT_bit);
- 17c:	86 b7       	in	r24, 0x36	; 54
- 17e:	80 68       	ori	r24, 0x80	; 128
- 180:	86 bf       	out	0x36, r24	; 54
-		while (READ_BIT(TWCR,TWINT_bit) ==0);
- 182:	06 b6       	in	r0, 0x36	; 54
- 184:	07 fe       	sbrs	r0, 7
- 186:	fd cf       	rjmp	.-6      	; 0x182 <TWI_Start+0x3c>
-		while ((TWSR & Mask_Prescaler_val) != SLA_RW_Transmit_status);
- 188:	81 b1       	in	r24, 0x01	; 1
- 18a:	88 7f       	andi	r24, 0xF8	; 248
- 18c:	88 31       	cpi	r24, 0x18	; 24
- 18e:	e1 f7       	brne	.-8      	; 0x188 <TWI_Start+0x42>
- 190:	08 95       	ret
+			SET_BIT(TWCR_Temp,TWEN_bit);
+			SET_BIT(TWCR_Temp,TWINT_bit);
+			SET_BIT(TWCR_Temp,TWSTA_bit);
+			TWCR = TWCR_Temp;
+ 3e6:	94 ea       	ldi	r25, 0xA4	; 164
+ 3e8:	96 bf       	out	0x36, r25	; 54
+			while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 3ea:	06 b6       	in	r0, 0x36	; 54
+ 3ec:	07 fe       	sbrs	r0, 7
+ 3ee:	fd cf       	rjmp	.-6      	; 0x3ea <TWI_Start+0x12>
+			while ((TWSR & Mask_Prescaler_val) != S_Transmit_status);
+ 3f0:	91 b1       	in	r25, 0x01	; 1
+ 3f2:	98 7f       	andi	r25, 0xF8	; 248
+ 3f4:	98 30       	cpi	r25, 0x08	; 8
+ 3f6:	e1 f7       	brne	.-8      	; 0x3f0 <TWI_Start+0x18>
+			TWDR = SLA_Value;
+ 3f8:	83 b9       	out	0x03, r24	; 3
+			SET_BIT(TWCR_Temp,TWEN_bit);
+			SET_BIT(TWCR_Temp,TWINT_bit);
+			TWCR =TWCR_Temp;
+ 3fa:	84 ea       	ldi	r24, 0xA4	; 164
+ 3fc:	86 bf       	out	0x36, r24	; 54
+			while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 3fe:	06 b6       	in	r0, 0x36	; 54
+ 400:	07 fe       	sbrs	r0, 7
+ 402:	fd cf       	rjmp	.-6      	; 0x3fe <TWI_Start+0x26>
+			while ((TWSR & Mask_Prescaler_val) != SLA_W_Transmit_A_Return_status);
+ 404:	81 b1       	in	r24, 0x01	; 1
+ 406:	88 7f       	andi	r24, 0xF8	; 248
+ 408:	88 31       	cpi	r24, 0x18	; 24
+ 40a:	e1 f7       	brne	.-8      	; 0x404 <TWI_Start+0x2c>
+ 40c:	08 95       	ret
 		case Master_Receiver:
 		break;
 		case Slave_Transmitter:
 		break;
 		case Slave_Receiver:
-		TWAR = SLA_Value;
- 192:	82 b9       	out	0x02, r24	; 2
-		SET_BIT(TWCR,TWEN_bit);
- 194:	86 b7       	in	r24, 0x36	; 54
- 196:	84 60       	ori	r24, 0x04	; 4
- 198:	86 bf       	out	0x36, r24	; 54
-		SET_BIT(TWCR,TWEA_bit);
- 19a:	86 b7       	in	r24, 0x36	; 54
- 19c:	80 64       	ori	r24, 0x40	; 64
- 19e:	86 bf       	out	0x36, r24	; 54
-		SET_BIT(TWCR,TWINT_bit);
- 1a0:	86 b7       	in	r24, 0x36	; 54
- 1a2:	80 68       	ori	r24, 0x80	; 128
- 1a4:	86 bf       	out	0x36, r24	; 54
-		while (READ_BIT(TWCR,TWINT_bit) ==0);
- 1a6:	06 b6       	in	r0, 0x36	; 54
- 1a8:	07 fe       	sbrs	r0, 7
- 1aa:	fd cf       	rjmp	.-6      	; 0x1a6 <TWI_Start+0x60>
-		while ((TWSR & Mask_Prescaler_val) != Own_SLA_A_Returned_status);
- 1ac:	81 b1       	in	r24, 0x01	; 1
- 1ae:	88 7f       	andi	r24, 0xF8	; 248
- 1b0:	80 36       	cpi	r24, 0x60	; 96
- 1b2:	e1 f7       	brne	.-8      	; 0x1ac <TWI_Start+0x66>
- 1b4:	08 95       	ret
+			TWAR = SLA_Value;
+ 40e:	82 b9       	out	0x02, r24	; 2
+			SET_BIT(TWCR,TWEN_bit);
+ 410:	86 b7       	in	r24, 0x36	; 54
+ 412:	84 60       	ori	r24, 0x04	; 4
+ 414:	86 bf       	out	0x36, r24	; 54
+			SET_BIT(TWCR,TWEA_bit);
+ 416:	86 b7       	in	r24, 0x36	; 54
+ 418:	80 64       	ori	r24, 0x40	; 64
+ 41a:	86 bf       	out	0x36, r24	; 54
+			SET_BIT(TWCR,TWINT_bit);
+ 41c:	86 b7       	in	r24, 0x36	; 54
+ 41e:	80 68       	ori	r24, 0x80	; 128
+ 420:	86 bf       	out	0x36, r24	; 54
+			while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 422:	06 b6       	in	r0, 0x36	; 54
+ 424:	07 fe       	sbrs	r0, 7
+ 426:	fd cf       	rjmp	.-6      	; 0x422 <TWI_Start+0x4a>
+			while ((TWSR & Mask_Prescaler_val) != Own_SLA_A_Returned_status);
+ 428:	81 b1       	in	r24, 0x01	; 1
+ 42a:	88 7f       	andi	r24, 0xF8	; 248
+ 42c:	80 36       	cpi	r24, 0x60	; 96
+ 42e:	e1 f7       	brne	.-8      	; 0x428 <TWI_Start+0x50>
+ 430:	08 95       	ret
 
-000001b6 <TWI_Write_Byte>:
-		break;
-	}
+00000432 <TWI_Repeated_Start>:
+{
+	uint_8 TWCR_Temp=0;
+	SET_BIT(TWCR_Temp,TWINT_bit);
+	SET_BIT(TWCR_Temp,TWEN_bit);
+	SET_BIT(TWCR_Temp,TWSTA_bit);
+	TWCR=TWCR_Temp;
+ 432:	84 ea       	ldi	r24, 0xA4	; 164
+ 434:	86 bf       	out	0x36, r24	; 54
+	while (READ_BIT(TWCR,TWINT_bit) ==0);
+ 436:	06 b6       	in	r0, 0x36	; 54
+ 438:	07 fe       	sbrs	r0, 7
+ 43a:	fd cf       	rjmp	.-6      	; 0x436 <TWI_Repeated_Start+0x4>
+	while ((TWSR & Mask_Prescaler_val) != RS_Transmit_status);
+ 43c:	81 b1       	in	r24, 0x01	; 1
+ 43e:	88 7f       	andi	r24, 0xF8	; 248
+ 440:	80 31       	cpi	r24, 0x10	; 16
+ 442:	e1 f7       	brne	.-8      	; 0x43c <TWI_Repeated_Start+0xa>
 }
+ 444:	08 95       	ret
+
+00000446 <TWI_Write_Byte>:
 void TWI_Write_Byte(uint_8 T_Data)
 {
 	TWDR = T_Data;
- 1b6:	83 b9       	out	0x03, r24	; 3
-	TWCR=(1<<TWINT_bit)|(1<<TWEN_bit);
- 1b8:	84 e8       	ldi	r24, 0x84	; 132
- 1ba:	86 bf       	out	0x36, r24	; 54
+ 446:	83 b9       	out	0x03, r24	; 3
+	uint_8 TWCR_Temp=0;
+	SET_BIT(TWCR_Temp,TWINT_bit);
+	SET_BIT(TWCR_Temp,TWEN_bit);
+	TWCR=TWCR_Temp;
+ 448:	84 e8       	ldi	r24, 0x84	; 132
+ 44a:	86 bf       	out	0x36, r24	; 54
 	while (READ_BIT(TWCR,TWINT_bit) ==0);
- 1bc:	06 b6       	in	r0, 0x36	; 54
- 1be:	07 fe       	sbrs	r0, 7
- 1c0:	fd cf       	rjmp	.-6      	; 0x1bc <TWI_Write_Byte+0x6>
+ 44c:	06 b6       	in	r0, 0x36	; 54
+ 44e:	07 fe       	sbrs	r0, 7
+ 450:	fd cf       	rjmp	.-6      	; 0x44c <TWI_Write_Byte+0x6>
 	while ((TWSR & Mask_Prescaler_val) != Data_Transmit_status);
- 1c2:	81 b1       	in	r24, 0x01	; 1
- 1c4:	88 7f       	andi	r24, 0xF8	; 248
- 1c6:	88 32       	cpi	r24, 0x28	; 40
- 1c8:	e1 f7       	brne	.-8      	; 0x1c2 <TWI_Write_Byte+0xc>
+ 452:	81 b1       	in	r24, 0x01	; 1
+ 454:	88 7f       	andi	r24, 0xF8	; 248
+ 456:	88 32       	cpi	r24, 0x28	; 40
+ 458:	e1 f7       	brne	.-8      	; 0x452 <TWI_Write_Byte+0xc>
 }
- 1ca:	08 95       	ret
+ 45a:	08 95       	ret
 
-000001cc <TWI_Stop>:
-
+0000045c <TWI_Stop>:
+{
+	TWAR=address;
+}
 void TWI_Stop(void)
 {
 	SET_BIT(TWCR,TWEN_bit);
- 1cc:	86 b7       	in	r24, 0x36	; 54
- 1ce:	84 60       	ori	r24, 0x04	; 4
- 1d0:	86 bf       	out	0x36, r24	; 54
+ 45c:	86 b7       	in	r24, 0x36	; 54
+ 45e:	84 60       	ori	r24, 0x04	; 4
+ 460:	86 bf       	out	0x36, r24	; 54
 	SET_BIT(TWCR,TWINT_bit);
- 1d2:	86 b7       	in	r24, 0x36	; 54
- 1d4:	80 68       	ori	r24, 0x80	; 128
- 1d6:	86 bf       	out	0x36, r24	; 54
+ 462:	86 b7       	in	r24, 0x36	; 54
+ 464:	80 68       	ori	r24, 0x80	; 128
+ 466:	86 bf       	out	0x36, r24	; 54
 	SET_BIT(TWCR,TWSTO_bit);
- 1d8:	86 b7       	in	r24, 0x36	; 54
- 1da:	80 61       	ori	r24, 0x10	; 16
- 1dc:	86 bf       	out	0x36, r24	; 54
- 1de:	08 95       	ret
+ 468:	86 b7       	in	r24, 0x36	; 54
+ 46a:	80 61       	ori	r24, 0x10	; 16
+ 46c:	86 bf       	out	0x36, r24	; 54
+ 46e:	08 95       	ret
 
-000001e0 <__udivmodsi4>:
- 1e0:	a1 e2       	ldi	r26, 0x21	; 33
- 1e2:	1a 2e       	mov	r1, r26
- 1e4:	aa 1b       	sub	r26, r26
- 1e6:	bb 1b       	sub	r27, r27
- 1e8:	fd 01       	movw	r30, r26
- 1ea:	0d c0       	rjmp	.+26     	; 0x206 <__udivmodsi4_ep>
+00000470 <Write_address_For_Read>:
+	while ((TWSR & Mask_Prescaler_val) != Data_Rec_A_Returned_status);
+	return TWDR;
+}
+void Write_address_For_Read(uint_8 address)
+{
+	TWDR=address;
+ 470:	83 b9       	out	0x03, r24	; 3
+	uint_8 TWCR_Temp=0;
+	SET_BIT(TWCR_Temp,TWINT_bit);
+	SET_BIT(TWCR_Temp,TWEN_bit);
+	TWCR=TWCR_Temp;
+ 472:	84 e8       	ldi	r24, 0x84	; 132
+ 474:	86 bf       	out	0x36, r24	; 54
+	while(READ_BIT(TWCR,TWINT_bit)==0);
+ 476:	06 b6       	in	r0, 0x36	; 54
+ 478:	07 fe       	sbrs	r0, 7
+ 47a:	fd cf       	rjmp	.-6      	; 0x476 <Write_address_For_Read+0x6>
+	while ((TWSR & Mask_Prescaler_val) != SLA_R_Transmit_A_Returned_status);
+ 47c:	81 b1       	in	r24, 0x01	; 1
+ 47e:	88 7f       	andi	r24, 0xF8	; 248
+ 480:	80 34       	cpi	r24, 0x40	; 64
+ 482:	e1 f7       	brne	.-8      	; 0x47c <Write_address_For_Read+0xc>
+}
+ 484:	08 95       	ret
 
-000001ec <__udivmodsi4_loop>:
- 1ec:	aa 1f       	adc	r26, r26
- 1ee:	bb 1f       	adc	r27, r27
- 1f0:	ee 1f       	adc	r30, r30
- 1f2:	ff 1f       	adc	r31, r31
- 1f4:	a2 17       	cp	r26, r18
- 1f6:	b3 07       	cpc	r27, r19
- 1f8:	e4 07       	cpc	r30, r20
- 1fa:	f5 07       	cpc	r31, r21
- 1fc:	20 f0       	brcs	.+8      	; 0x206 <__udivmodsi4_ep>
- 1fe:	a2 1b       	sub	r26, r18
- 200:	b3 0b       	sbc	r27, r19
- 202:	e4 0b       	sbc	r30, r20
- 204:	f5 0b       	sbc	r31, r21
+00000486 <TWI_Read_Byte_NAck>:
+uint_8 TWI_Read_Byte_NAck(void)
+{
+	SET_BIT(TWCR,TWEN_bit);
+ 486:	86 b7       	in	r24, 0x36	; 54
+ 488:	84 60       	ori	r24, 0x04	; 4
+ 48a:	86 bf       	out	0x36, r24	; 54
+	SET_BIT(TWCR,TWINT_bit);
+ 48c:	86 b7       	in	r24, 0x36	; 54
+ 48e:	80 68       	ori	r24, 0x80	; 128
+ 490:	86 bf       	out	0x36, r24	; 54
+	while(READ_BIT(TWCR,TWINT_bit)==0);
+ 492:	06 b6       	in	r0, 0x36	; 54
+ 494:	07 fe       	sbrs	r0, 7
+ 496:	fd cf       	rjmp	.-6      	; 0x492 <TWI_Read_Byte_NAck+0xc>
+	while ((TWSR & Mask_Prescaler_val) != Data_Rec_NA_Returned_status);
+ 498:	81 b1       	in	r24, 0x01	; 1
+ 49a:	88 7f       	andi	r24, 0xF8	; 248
+ 49c:	88 35       	cpi	r24, 0x58	; 88
+ 49e:	e1 f7       	brne	.-8      	; 0x498 <TWI_Read_Byte_NAck+0x12>
+	return TWDR;
+ 4a0:	83 b1       	in	r24, 0x03	; 3
+}
+ 4a2:	08 95       	ret
 
-00000206 <__udivmodsi4_ep>:
- 206:	66 1f       	adc	r22, r22
- 208:	77 1f       	adc	r23, r23
- 20a:	88 1f       	adc	r24, r24
- 20c:	99 1f       	adc	r25, r25
- 20e:	1a 94       	dec	r1
- 210:	69 f7       	brne	.-38     	; 0x1ec <__udivmodsi4_loop>
- 212:	60 95       	com	r22
- 214:	70 95       	com	r23
- 216:	80 95       	com	r24
- 218:	90 95       	com	r25
- 21a:	9b 01       	movw	r18, r22
- 21c:	ac 01       	movw	r20, r24
- 21e:	bd 01       	movw	r22, r26
- 220:	cf 01       	movw	r24, r30
- 222:	08 95       	ret
+000004a4 <__udivmodsi4>:
+ 4a4:	a1 e2       	ldi	r26, 0x21	; 33
+ 4a6:	1a 2e       	mov	r1, r26
+ 4a8:	aa 1b       	sub	r26, r26
+ 4aa:	bb 1b       	sub	r27, r27
+ 4ac:	fd 01       	movw	r30, r26
+ 4ae:	0d c0       	rjmp	.+26     	; 0x4ca <__udivmodsi4_ep>
 
-00000224 <_exit>:
- 224:	f8 94       	cli
+000004b0 <__udivmodsi4_loop>:
+ 4b0:	aa 1f       	adc	r26, r26
+ 4b2:	bb 1f       	adc	r27, r27
+ 4b4:	ee 1f       	adc	r30, r30
+ 4b6:	ff 1f       	adc	r31, r31
+ 4b8:	a2 17       	cp	r26, r18
+ 4ba:	b3 07       	cpc	r27, r19
+ 4bc:	e4 07       	cpc	r30, r20
+ 4be:	f5 07       	cpc	r31, r21
+ 4c0:	20 f0       	brcs	.+8      	; 0x4ca <__udivmodsi4_ep>
+ 4c2:	a2 1b       	sub	r26, r18
+ 4c4:	b3 0b       	sbc	r27, r19
+ 4c6:	e4 0b       	sbc	r30, r20
+ 4c8:	f5 0b       	sbc	r31, r21
 
-00000226 <__stop_program>:
- 226:	ff cf       	rjmp	.-2      	; 0x226 <__stop_program>
+000004ca <__udivmodsi4_ep>:
+ 4ca:	66 1f       	adc	r22, r22
+ 4cc:	77 1f       	adc	r23, r23
+ 4ce:	88 1f       	adc	r24, r24
+ 4d0:	99 1f       	adc	r25, r25
+ 4d2:	1a 94       	dec	r1
+ 4d4:	69 f7       	brne	.-38     	; 0x4b0 <__udivmodsi4_loop>
+ 4d6:	60 95       	com	r22
+ 4d8:	70 95       	com	r23
+ 4da:	80 95       	com	r24
+ 4dc:	90 95       	com	r25
+ 4de:	9b 01       	movw	r18, r22
+ 4e0:	ac 01       	movw	r20, r24
+ 4e2:	bd 01       	movw	r22, r26
+ 4e4:	cf 01       	movw	r24, r30
+ 4e6:	08 95       	ret
+
+000004e8 <_exit>:
+ 4e8:	f8 94       	cli
+
+000004ea <__stop_program>:
+ 4ea:	ff cf       	rjmp	.-2      	; 0x4ea <__stop_program>

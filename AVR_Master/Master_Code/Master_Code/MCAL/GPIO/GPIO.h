@@ -8,6 +8,7 @@
 #define GPIO_H_
 
 #include <AVR32_Chip_Confg.h>
+#include <AVR_32_Registers.h>
 
 
 

@@ -21,7 +21,7 @@ a XOR b - if one value is 1 and the other value is 0, the final value is 1, othe
 */
 
 //This macro used to set a specific bit in a register
-#define SET_BIT(Reg , bit)	(Reg |= (1<<bit))
+#define SET_BIT(Reg , bit)   (Reg |= (1<<bit))
 /*
 For  Ex
 case High:                         // we always used it when we need to get High single from output pin

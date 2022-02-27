@@ -33,6 +33,8 @@ LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
+../HAL/LCD \
+../HAL/EEPROM \
 ../MCAL \
 ../HAL \
 ../APP \
@@ -45,6 +47,8 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../APP/Master_app.c \
 ../APP/Master_Code.c \
+../HAL/EEPROM/EEPROM.c \
+../HAL/LCD/LCD.c \
 ../MCAL/GPIO/GPIO.c \
 ../MCAL/I2C/I2C_File.c
 
@@ -58,24 +62,32 @@ ASM_SRCS +=
 OBJS +=  \
 APP/Master_app.o \
 APP/Master_Code.o \
+HAL/EEPROM/EEPROM.o \
+HAL/LCD/LCD.o \
 MCAL/GPIO/GPIO.o \
 MCAL/I2C/I2C_File.o
 
 OBJS_AS_ARGS +=  \
 APP/Master_app.o \
 APP/Master_Code.o \
+HAL/EEPROM/EEPROM.o \
+HAL/LCD/LCD.o \
 MCAL/GPIO/GPIO.o \
 MCAL/I2C/I2C_File.o
 
 C_DEPS +=  \
 APP/Master_app.d \
 APP/Master_Code.d \
+HAL/EEPROM/EEPROM.d \
+HAL/LCD/LCD.d \
 MCAL/GPIO/GPIO.d \
 MCAL/I2C/I2C_File.d
 
 C_DEPS_AS_ARGS +=  \
 APP/Master_app.d \
 APP/Master_Code.d \
+HAL/EEPROM/EEPROM.d \
+HAL/LCD/LCD.d \
 MCAL/GPIO/GPIO.d \
 MCAL/I2C/I2C_File.d
 
@@ -102,24 +114,42 @@ LINKER_SCRIPT_DEP+=
 
 
 
+
+
+
+
 APP/%.o: ../APP/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/EEPROM"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+HAL/EEPROM/%.o: ../HAL/EEPROM/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.8.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/EEPROM"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+HAL/LCD/%.o: ../HAL/LCD/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.8.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/EEPROM"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 MCAL/GPIO/%.o: ../MCAL/GPIO/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/EEPROM"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 MCAL/I2C/%.o: ../MCAL/I2C/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../Services" -I"../MCAL/I2C" -I"../APP" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/EEPROM"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 

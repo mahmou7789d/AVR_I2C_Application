@@ -235,6 +235,32 @@ used this register in Interrupt initalization function
 #define UBRRL    (*(volatile uint8 *)(UBRRL_ADDRESS + IO_MAPPING_OFFSET))
 #define UDR      (*(volatile uint8 *)(UDR_ADDRESS   + IO_MAPPING_OFFSET))
 
+/************************************************** Internal EEPROM Register ********************************************/
+
+#define EEARH_ADDRESS         (0x1F)
+#define EEARL_ADDRESS         (0x1E)
+#define EEDR_ADDRESS          (0x1D)
+#define EECR_ADDRESS          (0x1C)
+
+/* The address of the EEPROM address register High bit it contain only bit 9/10 */
+#define EEARH        (*(volatile uint_8 *) (EEARH_ADDRESS + IO_MAPPING_OFFSET))
+/* The address of the EEPROM address register Low bit it contain bits from 0-7 */
+#define EEARL        (*(volatile uint_8 *) (EEARL_ADDRESS + IO_MAPPING_OFFSET))
+/* hold the 10 bits of the address */
+#define EEAR        (*(volatile uint_16 *) (EEARL_ADDRESS + IO_MAPPING_OFFSET))
+/* The address of the EEPROM Control register */
+#define EECR         (*(volatile uint_8 *) (EECR_ADDRESS + IO_MAPPING_OFFSET))
+
+/* the Control Register Bits */
+#define EERE_Bit   (0) /* EEPROM Read Enable Bit */
+#define EEWE_Bit   (1) /* EEPROM Write Enable Bit */
+#define EEMWE_Bit  (2) /* EEPROM Master Write Enable bit */
+#define EERIE_Bit  (3) /*Ready Interrupt Enable */
+/* the Other Bit is Reserved */
+
+/*The address of the EEPROM Data register */
+#define EEDR         (*(volatile uint8 *) (EEDR_ADDRESS + IO_MAPPING_OFFSET))
+
 /************************************************************************************************ Timers Registers ***************************************************************************************************/
 
 /* The Address of The Timer 0 Register */

@@ -14,49 +14,63 @@ Discarded input sections
  .text          0x00000000        0x0 APP/Master_app.o
  .data          0x00000000        0x0 APP/Master_app.o
  .bss           0x00000000        0x0 APP/Master_app.o
+ .text.Master_Init_system_1
+                0x00000000       0x16 APP/Master_app.o
+ .text.Master_Control_system_1
+                0x00000000       0x3e APP/Master_app.o
  .text          0x00000000        0x0 APP/Master_Code.o
  .data          0x00000000        0x0 APP/Master_Code.o
  .bss           0x00000000        0x0 APP/Master_Code.o
+ .text          0x00000000        0x0 HAL/EEPROM/EEPROM.o
+ .data          0x00000000        0x0 HAL/EEPROM/EEPROM.o
+ .bss           0x00000000        0x0 HAL/EEPROM/EEPROM.o
+ .text.Disable_Interrupt
+                0x00000000        0xe HAL/EEPROM/EEPROM.o
+ .text.EEPROM_Write_Data
+                0x00000000       0x14 HAL/EEPROM/EEPROM.o
+ .text.EEPROM_Read_Data
+                0x00000000        0xa HAL/EEPROM/EEPROM.o
+ .debug_info    0x00000000      0x119 HAL/EEPROM/EEPROM.o
+ .debug_abbrev  0x00000000       0x92 HAL/EEPROM/EEPROM.o
+ .debug_loc     0x00000000       0x6b HAL/EEPROM/EEPROM.o
+ .debug_aranges
+                0x00000000       0x30 HAL/EEPROM/EEPROM.o
+ .debug_ranges  0x00000000       0x20 HAL/EEPROM/EEPROM.o
+ .debug_line    0x00000000       0x8d HAL/EEPROM/EEPROM.o
+ .debug_str     0x00000000      0x1f3 HAL/EEPROM/EEPROM.o
+ .comment       0x00000000       0x31 HAL/EEPROM/EEPROM.o
+ .debug_frame   0x00000000       0x44 HAL/EEPROM/EEPROM.o
+ .text          0x00000000        0x0 HAL/LCD/LCD.o
+ .data          0x00000000        0x0 HAL/LCD/LCD.o
+ .bss           0x00000000        0x0 HAL/LCD/LCD.o
+ .text.Move_Curser_LCD
+                0x00000000       0x36 HAL/LCD/LCD.o
+ .text.Clear_LCD
+                0x00000000       0x14 HAL/LCD/LCD.o
+ .text.Send_String_LCD
+                0x00000000       0x1e HAL/LCD/LCD.o
  .text          0x00000000        0x0 MCAL/GPIO/GPIO.o
  .data          0x00000000        0x0 MCAL/GPIO/GPIO.o
  .bss           0x00000000        0x0 MCAL/GPIO/GPIO.o
- .text.GPIO_Pin_Configuration
-                0x00000000       0x7a MCAL/GPIO/GPIO.o
- .text.GPIO_Pin_Write
-                0x00000000       0x46 MCAL/GPIO/GPIO.o
  .text.GPIO_Pin_Read
                 0x00000000       0x26 MCAL/GPIO/GPIO.o
  .text.GPIO_Pin_Toggle
                 0x00000000       0x1e MCAL/GPIO/GPIO.o
- .text.GPIO_Port_Configuration
-                0x00000000        0x6 MCAL/GPIO/GPIO.o
  .text.GPIO_Port_Write
                 0x00000000        0x6 MCAL/GPIO/GPIO.o
  .text.GPIO_Port_Read
                 0x00000000        0x6 MCAL/GPIO/GPIO.o
- .text.GPIO_Write_High_Nibble
-                0x00000000       0x4a MCAL/GPIO/GPIO.o
  .text.GPIO_Write_Low_Nibble
                 0x00000000       0x4a MCAL/GPIO/GPIO.o
  .text.GPIO_Pin_Enable_PULLUP_RES
                 0x00000000        0x2 MCAL/GPIO/GPIO.o
- .debug_info    0x00000000      0x3f1 MCAL/GPIO/GPIO.o
- .debug_abbrev  0x00000000       0xf4 MCAL/GPIO/GPIO.o
- .debug_loc     0x00000000      0x292 MCAL/GPIO/GPIO.o
- .debug_aranges
-                0x00000000       0x68 MCAL/GPIO/GPIO.o
- .debug_ranges  0x00000000       0x58 MCAL/GPIO/GPIO.o
- .debug_line    0x00000000      0x132 MCAL/GPIO/GPIO.o
- .debug_str     0x00000000      0x3b4 MCAL/GPIO/GPIO.o
- .comment       0x00000000       0x31 MCAL/GPIO/GPIO.o
- .debug_frame   0x00000000       0xb4 MCAL/GPIO/GPIO.o
  .text          0x00000000        0x0 MCAL/I2C/I2C_File.o
  .data          0x00000000        0x0 MCAL/I2C/I2C_File.o
  .bss           0x00000000        0x0 MCAL/I2C/I2C_File.o
  .text.Set_SLA_Value
                 0x00000000        0x4 MCAL/I2C/I2C_File.o
- .text.TWI_Read_Byte
-                0x00000000       0x44 MCAL/I2C/I2C_File.o
+ .text.TWI_Read_Byte_Ack
+                0x00000000       0x24 MCAL/I2C/I2C_File.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_udivmodsi4.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_udivmodsi4.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_udivmodsi4.o)
@@ -121,6 +135,8 @@ Linker script and memory map
 LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5/crtm32.o
 LOAD APP/Master_app.o
 LOAD APP/Master_Code.o
+LOAD HAL/EEPROM/EEPROM.o
+LOAD HAL/LCD/LCD.o
 LOAD MCAL/GPIO/GPIO.o
 LOAD MCAL/I2C/I2C_File.o
 START GROUP
@@ -222,7 +238,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x228
+.text           0x00000000      0x4ec
  *(.vectors)
  .vectors       0x00000000       0x54 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vector_default
@@ -300,34 +316,66 @@ END GROUP
                 0x00000078                __vector_20
                 0x0000007c                . = ALIGN (0x2)
  *(.text.*)
- .text.Master_Init_system
-                0x0000007c       0x16 APP/Master_app.o
-                0x0000007c                Master_Init_system
- .text.Master_Control_system
-                0x00000092       0x3e APP/Master_app.o
-                0x00000092                Master_Control_system
- .text.main     0x000000d0        0xe APP/Master_Code.o
-                0x000000d0                main
+ .text.Master_Init_system_2
+                0x0000007c       0x1a APP/Master_app.o
+                0x0000007c                Master_Init_system_2
+ .text.Master_Control_system_2
+                0x00000096       0x66 APP/Master_app.o
+                0x00000096                Master_Control_system_2
+ .text.main     0x000000fc        0xa APP/Master_Code.o
+                0x000000fc                main
+ .text.Set_Enable_Bit
+                0x00000106       0x32 HAL/LCD/LCD.o
+ .text.Send_Command_LCD
+                0x00000138       0x48 HAL/LCD/LCD.o
+                0x00000138                Send_Command_LCD
+ .text.LCD_Init
+                0x00000180       0x98 HAL/LCD/LCD.o
+                0x00000180                LCD_Init
+ .text.Send_char_LCD
+                0x00000218       0x48 HAL/LCD/LCD.o
+                0x00000218                Send_char_LCD
+ .text.GPIO_Pin_Configuration
+                0x00000260       0x7a MCAL/GPIO/GPIO.o
+                0x00000260                GPIO_Pin_Configuration
+ .text.GPIO_Pin_Write
+                0x000002da       0x46 MCAL/GPIO/GPIO.o
+                0x000002da                GPIO_Pin_Write
+ .text.GPIO_Port_Configuration
+                0x00000320        0x6 MCAL/GPIO/GPIO.o
+                0x00000320                GPIO_Port_Configuration
+ .text.GPIO_Write_High_Nibble
+                0x00000326       0x4a MCAL/GPIO/GPIO.o
+                0x00000326                GPIO_Write_High_Nibble
  .text.TWI_INIT
-                0x000000de       0x68 MCAL/I2C/I2C_File.o
-                0x000000de                TWI_INIT
+                0x00000370       0x68 MCAL/I2C/I2C_File.o
+                0x00000370                TWI_INIT
  .text.TWI_Start
-                0x00000146       0x70 MCAL/I2C/I2C_File.o
-                0x00000146                TWI_Start
+                0x000003d8       0x5a MCAL/I2C/I2C_File.o
+                0x000003d8                TWI_Start
+ .text.TWI_Repeated_Start
+                0x00000432       0x14 MCAL/I2C/I2C_File.o
+                0x00000432                TWI_Repeated_Start
  .text.TWI_Write_Byte
-                0x000001b6       0x16 MCAL/I2C/I2C_File.o
-                0x000001b6                TWI_Write_Byte
+                0x00000446       0x16 MCAL/I2C/I2C_File.o
+                0x00000446                TWI_Write_Byte
  .text.TWI_Stop
-                0x000001cc       0x14 MCAL/I2C/I2C_File.o
-                0x000001cc                TWI_Stop
+                0x0000045c       0x14 MCAL/I2C/I2C_File.o
+                0x0000045c                TWI_Stop
+ .text.Write_address_For_Read
+                0x00000470       0x16 MCAL/I2C/I2C_File.o
+                0x00000470                Write_address_For_Read
+ .text.TWI_Read_Byte_NAck
+                0x00000486       0x1e MCAL/I2C/I2C_File.o
+                0x00000486                TWI_Read_Byte_NAck
  .text.libgcc.div
-                0x000001e0       0x44 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_udivmodsi4.o)
-                0x000001e0                __udivmodsi4
-                0x00000224                . = ALIGN (0x2)
+                0x000004a4       0x44 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_udivmodsi4.o)
+                0x000004a4                __udivmodsi4
+                0x000004e8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000224        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
-                0x00000224                _exit
-                0x00000224                exit
+ .fini9         0x000004e8        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
+                0x000004e8                _exit
+                0x000004e8                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -346,11 +394,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000224        0x4 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
+ .fini0         0x000004e8        0x4 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000228                _etext = .
+                0x000004ec                _etext = .
 
-.data           0x00800060        0x0 load address 0x00000228
+.data           0x00800060        0x0 load address 0x000004ec
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -371,8 +419,8 @@ END GROUP
                 0x00800061                TWI_1
  *(COMMON)
                 0x00800065                PROVIDE (__bss_end, .)
-                0x00000228                __data_load_start = LOADADDR (.data)
-                0x00000228                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000004ec                __data_load_start = LOADADDR (.data)
+                0x000004ec                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800065        0x0
                 0x00800065                PROVIDE (__noinit_start, .)
@@ -423,6 +471,8 @@ END GROUP
  .comment       0x00000000       0x30 APP/Master_app.o
                                  0x31 (size before relaxing)
  .comment       0x00000000       0x31 APP/Master_Code.o
+ .comment       0x00000000       0x31 HAL/LCD/LCD.o
+ .comment       0x00000000       0x31 MCAL/GPIO/GPIO.o
  .comment       0x00000000       0x31 MCAL/I2C/I2C_File.o
 
 .note.gnu.build-id
@@ -440,55 +490,73 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x90
+.debug_aranges  0x00000000      0x170
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x28 APP/Master_app.o
+                0x00000000       0x38 APP/Master_app.o
  .debug_aranges
-                0x00000028       0x20 APP/Master_Code.o
+                0x00000038       0x20 APP/Master_Code.o
  .debug_aranges
-                0x00000048       0x48 MCAL/I2C/I2C_File.o
+                0x00000058       0x50 HAL/LCD/LCD.o
+ .debug_aranges
+                0x000000a8       0x68 MCAL/GPIO/GPIO.o
+ .debug_aranges
+                0x00000110       0x60 MCAL/I2C/I2C_File.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0x5d3
+.debug_info     0x00000000     0x1431
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x2d7 APP/Master_app.o
- .debug_info    0x000002d7       0x85 APP/Master_Code.o
- .debug_info    0x0000035c      0x277 MCAL/I2C/I2C_File.o
+ .debug_info    0x00000000      0x48f APP/Master_app.o
+ .debug_info    0x0000048f       0x7c APP/Master_Code.o
+ .debug_info    0x0000050b      0x829 HAL/LCD/LCD.o
+ .debug_info    0x00000d34      0x3f1 MCAL/GPIO/GPIO.o
+ .debug_info    0x00001125      0x30c MCAL/I2C/I2C_File.o
 
-.debug_abbrev   0x00000000      0x2d8
+.debug_abbrev   0x00000000      0x610
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x167 APP/Master_app.o
- .debug_abbrev  0x00000167       0x6d APP/Master_Code.o
- .debug_abbrev  0x000001d4      0x104 MCAL/I2C/I2C_File.o
+ .debug_abbrev  0x00000000      0x1a6 APP/Master_app.o
+ .debug_abbrev  0x000001a6       0x6d APP/Master_Code.o
+ .debug_abbrev  0x00000213      0x1f6 HAL/LCD/LCD.o
+ .debug_abbrev  0x00000409       0xf4 MCAL/GPIO/GPIO.o
+ .debug_abbrev  0x000004fd      0x113 MCAL/I2C/I2C_File.o
 
-.debug_line     0x00000000      0x2fd
+.debug_line     0x00000000      0x725
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x180 APP/Master_app.o
- .debug_line    0x00000180       0x54 APP/Master_Code.o
- .debug_line    0x000001d4      0x129 MCAL/I2C/I2C_File.o
+ .debug_line    0x00000000      0x1d7 APP/Master_app.o
+ .debug_line    0x000001d7       0x53 APP/Master_Code.o
+ .debug_line    0x0000022a      0x259 HAL/LCD/LCD.o
+ .debug_line    0x00000483      0x132 MCAL/GPIO/GPIO.o
+ .debug_line    0x000005b5      0x170 MCAL/I2C/I2C_File.o
 
-.debug_frame    0x00000000       0xd4
+.debug_frame    0x00000000      0x278
  *(.debug_frame)
- .debug_frame   0x00000000       0x34 APP/Master_app.o
- .debug_frame   0x00000034       0x24 APP/Master_Code.o
- .debug_frame   0x00000058       0x7c MCAL/I2C/I2C_File.o
+ .debug_frame   0x00000000       0x54 APP/Master_app.o
+ .debug_frame   0x00000054       0x24 APP/Master_Code.o
+ .debug_frame   0x00000078       0xa0 HAL/LCD/LCD.o
+ .debug_frame   0x00000118       0xb4 MCAL/GPIO/GPIO.o
+ .debug_frame   0x000001cc       0xac MCAL/I2C/I2C_File.o
 
-.debug_str      0x00000000      0x3ca
+.debug_str      0x00000000      0x716
  *(.debug_str)
- .debug_str     0x00000000      0x35e APP/Master_app.o
-                                0x397 (size before relaxing)
- .debug_str     0x0000035e       0x1a APP/Master_Code.o
-                                0x13f (size before relaxing)
- .debug_str     0x00000378       0x52 MCAL/I2C/I2C_File.o
-                                0x35d (size before relaxing)
+ .debug_str     0x00000000      0x3e3 APP/Master_app.o
+                                0x41c (size before relaxing)
+ .debug_str     0x000003e3       0x1a APP/Master_Code.o
+                                0x143 (size before relaxing)
+ .debug_str     0x000003fd      0x183 HAL/LCD/LCD.o
+                                0x377 (size before relaxing)
+ .debug_str     0x00000580      0x136 MCAL/GPIO/GPIO.o
+                                0x3b4 (size before relaxing)
+ .debug_str     0x000006b6       0x60 MCAL/I2C/I2C_File.o
+                                0x3a8 (size before relaxing)
 
-.debug_loc      0x00000000      0x1ca
+.debug_loc      0x00000000      0x691
  *(.debug_loc)
  .debug_loc     0x00000000       0x48 APP/Master_app.o
- .debug_loc     0x00000048      0x182 MCAL/I2C/I2C_File.o
+ .debug_loc     0x00000048      0x1db HAL/LCD/LCD.o
+ .debug_loc     0x00000223      0x292 MCAL/GPIO/GPIO.o
+ .debug_loc     0x000004b5      0x1dc MCAL/I2C/I2C_File.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -508,11 +576,13 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x60
+.debug_ranges   0x00000000      0x120
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x18 APP/Master_app.o
- .debug_ranges  0x00000018       0x10 APP/Master_Code.o
- .debug_ranges  0x00000028       0x38 MCAL/I2C/I2C_File.o
+ .debug_ranges  0x00000000       0x28 APP/Master_app.o
+ .debug_ranges  0x00000028       0x10 APP/Master_Code.o
+ .debug_ranges  0x00000038       0x40 HAL/LCD/LCD.o
+ .debug_ranges  0x00000078       0x58 MCAL/GPIO/GPIO.o
+ .debug_ranges  0x000000d0       0x50 MCAL/I2C/I2C_File.o
 
 .debug_macro
  *(.debug_macro)
